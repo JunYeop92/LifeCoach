@@ -1,16 +1,18 @@
-export default function MeasureTime($target) {
+export default function MeasureTime({ $target, setTotal }) {
     this.state = {
         start: null, //Date형
         end: null, //Date형
         TIME_ID: null, //setTimeout 통제를 위한 변수
+        hour: 0,
+        min: 0,
     };
 
     this.constructor = () => {
         const $timer = document.createElement('div');
         $timer.id = 'timer';
-        $timer.innerHTML = `<span id='today-hour'>00</span>
+        $timer.innerHTML = `<span id='hour'>00</span>
                                 <span>:</span> 
-                                <span id='today-min'>00</span>`;
+                                <span id='min'>00</span>`;
         $target.appendChild($timer);
 
         const $button = document.createElement('div');
@@ -19,35 +21,37 @@ export default function MeasureTime($target) {
         $target.appendChild($button);
     };
 
-    const timeGo = () => {
-        this.state.end = new Date();
-        const { start, end } = this.state;
-        const hour = Math.floor((end - start) / (60000 * 60));
-        const hourRest = (end - start) % (60000 * 60);
-        const min = Math.floor(hourRest / 60000);
-
-        document.querySelector('#today-hour').innerText =
-            hour > 9 ? hour : '0' + hour;
-        document.querySelector('#today-min').innerText =
-            min > 9 ? min : '0' + min;
-        this.state.TIME_ID = setTimeout(timeGo, 60000);
-    };
-
     this.attachEvent = () => {
         document.querySelector('#start-btn').addEventListener('click', (e) => {
             this.state.start = new Date();
-            timeGo();
+            this.setState();
+            console.log('start');
         });
         document.querySelector('#end-btn').addEventListener('click', (e) => {
             if (this.state.TIME_ID) {
                 clearTimeout(this.state.TIME_ID);
-                alert('end');
+                const { hour, min } = this.state;
+                const totalTime = hour * 60 + min;
+                setTotal(totalTime);
+                console.log('end');
             }
         });
     };
 
-    this.setState = () => {};
-    this.render = () => {};
+    this.setState = () => {
+        this.state.end = new Date();
+        const { start, end } = this.state;
+        this.state.hour = Math.floor((end - start) / (60000 * 60));
+        const hourRest = (end - start) % (60000 * 60);
+        this.state.min = Math.floor(hourRest / 60000);
+        this.state.TIME_ID = setTimeout(this.setState, 60000);
+        this.render();
+    };
+    this.render = () => {
+        const { hour, min } = this.state;
+        document.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
+        document.querySelector('#min').innerText = min > 9 ? min : '0' + min;
+    };
 
     this.constructor();
     this.attachEvent();
