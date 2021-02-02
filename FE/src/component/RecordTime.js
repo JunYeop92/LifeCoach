@@ -2,6 +2,8 @@ export default function RecordTime({ $target }) {
     this.state = {
         totalTime: 0,
     };
+    this.$element;
+
     this.constructor = () => {
         const $total = document.createElement('div');
         $total.id = 'total';
@@ -11,17 +13,18 @@ export default function RecordTime({ $target }) {
                             <span>:</span> 
                             <span id='min'>00</span>`;
         $target.appendChild($total);
+        this.$element = $total;
     };
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
     };
     this.render = () => {
-        const hour = this.state.totalTime / 60;
+        const hour = Math.floor(this.state.totalTime / 60);
         const min = this.state.totalTime % 60;
 
-        document.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
-        document.querySelector('#min').innerText = min > 9 ? min : '0' + min;
+        this.$element.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
+        this.$element.querySelector('#min').innerText = min > 9 ? min : '0' + min;
     };
 
     this.constructor();

@@ -6,6 +6,7 @@ export default function MeasureTime({ $target, setTotal }) {
         hour: 0,
         min: 0,
     };
+    this.$element;
 
     this.constructor = () => {
         const $timer = document.createElement('div');
@@ -17,23 +18,28 @@ export default function MeasureTime({ $target, setTotal }) {
 
         const $button = document.createElement('div');
         $button.innerHTML = `<button type='button' id='start-btn'>시작</button>
-                            <button type='button' id='end-btn'>종료</button>`;
-        $target.appendChild($button);
+                            <button type='button' id='end-btn' style='display:none'>종료</button>`;
+        $timer.appendChild($button);
+        this.$element = $timer;
     };
 
     this.attachEvent = () => {
-        document.querySelector('#start-btn').addEventListener('click', (e) => {
+        this.$element.querySelector('#start-btn').addEventListener('click', (e) => {
             this.state.start = new Date();
             this.setState();
             console.log('start');
+            this.$element.querySelector('#start-btn').style.display = 'none';
+            this.$element.querySelector('#end-btn').style.display = 'inline-block';
         });
-        document.querySelector('#end-btn').addEventListener('click', (e) => {
+        this.$element.querySelector('#end-btn').addEventListener('click', (e) => {
             if (this.state.TIME_ID) {
                 clearTimeout(this.state.TIME_ID);
                 const { hour, min } = this.state;
                 const totalTime = hour * 60 + min;
                 setTotal(totalTime);
                 console.log('end');
+                this.$element.querySelector('#start-btn').style.display = 'inline-block';
+                this.$element.querySelector('#end-btn').style.display = 'none';
             }
         });
     };
