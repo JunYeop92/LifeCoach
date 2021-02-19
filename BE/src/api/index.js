@@ -6,18 +6,17 @@ const api = new Router();
 api.get('/', async (ctx) => {});
 
 api.post('/', async (ctx) => {
-    const { category, ymd, seq, isEnd, insertDate } = ctx.request.body;
+    const { category, ymd, isEnd, insertDate } = ctx.request.body;
     const time = new Time({
         category,
         ymd,
-        seq,
         isEnd,
         insertDate,
     });
 
     try {
         await time.save();
-        //ctx.body = time;
+        ctx.body = time;
     } catch (e) {
         ctx.throw(500, e);
     }

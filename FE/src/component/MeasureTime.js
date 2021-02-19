@@ -1,3 +1,5 @@
+import * as api from '../api/time.js';
+
 export default function MeasureTime({ $target, setTotal }) {
     this.state = {
         start: null, //Date형
@@ -30,6 +32,13 @@ export default function MeasureTime({ $target, setTotal }) {
             console.log('start');
             this.$element.querySelector('#start-btn').style.display = 'none';
             this.$element.querySelector('#end-btn').style.display = 'inline-block';
+            const ymd = getYmd(this.state.start);
+            api.insert({
+                category: 'study',
+                ymd: ymd,
+                isEnd: false,
+                insertDate: this.state.start,
+            });
         });
         this.$element.querySelector('#end-btn').addEventListener('click', (e) => {
             if (this.state.TIME_ID) {
@@ -40,6 +49,14 @@ export default function MeasureTime({ $target, setTotal }) {
                 console.log('end');
                 this.$element.querySelector('#start-btn').style.display = 'inline-block';
                 this.$element.querySelector('#end-btn').style.display = 'none';
+
+                const ymd = getYmd(this.state.end);
+                api.insert({
+                    category: 'study',
+                    ymd: ymd,
+                    isEnd: true,
+                    insertDate: this.state.end,
+                });
             }
         });
     };
@@ -62,3 +79,15 @@ export default function MeasureTime({ $target, setTotal }) {
     this.constructor();
     this.attachEvent();
 }
+
+const getYmd = (date) => {
+    const yy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+
+    mm = mm > 9 ? mm : '0' + mm;
+    dd = dd > 9 ? dd : '0' + dd;
+
+    const ymd = yy + '' + mm + '' + dd;
+    return ymd;
+};
