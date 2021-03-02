@@ -4,7 +4,7 @@ export default function RecordTime({ $target }) {
     };
     this.$element;
 
-    this.constructor = () => {
+    this.initialize = () => {
         const $total = document.createElement('div');
         $total.id = 'total';
         $total.innerHTML = `<h1>Today</h1>
@@ -27,5 +27,5 @@ export default function RecordTime({ $target }) {
         this.$element.querySelector('#min').innerText = min > 9 ? min : '0' + min;
     };
 
-    this.constructor();
+    this.initialize();
 }

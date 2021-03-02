@@ -1,4 +1,4 @@
-import * as api from '../api/time.js';
+import * as api from '../../api/time.js';
 
 export default function MeasureTime({ $target, setTotal }) {
     this.state = {
@@ -10,7 +10,7 @@ export default function MeasureTime({ $target, setTotal }) {
     };
     this.$element;
 
-    this.constructor = () => {
+    this.initialize = () => {
         const $timer = document.createElement('div');
         $timer.id = 'timer';
         $timer.innerHTML = `<span id='hour'>00</span>
@@ -76,7 +76,7 @@ export default function MeasureTime({ $target, setTotal }) {
         document.querySelector('#min').innerText = min > 9 ? min : '0' + min;
     };
 
-    this.constructor();
+    this.initialize();
     this.attachEvent();
 }
 
