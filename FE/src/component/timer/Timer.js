@@ -5,6 +5,7 @@ export default function Timer() {
     this.state = {
         totalTime: 0, // 분단위, max:24*60
     };
+    this.component;
     this.$element;
 
     this.initialize = () => {
@@ -20,13 +21,17 @@ export default function Timer() {
         });
         const recordTime = new RecordTime({ $target: $container });
         this.$element = $container;
+        this.component = {
+            measureTime,
+            recordTime,
+        };
     };
 
     this.setState = (nextState) => {
         this.state = nextState;
         const { totalTime } = this.state;
 
-        recordTime.setState({
+        this.component.recordTime.setState({
             totalTime,
         });
     };
