@@ -6,10 +6,14 @@ import css from './style.css';
 
 (function () {
     const root = document.querySelector('#app');
+
+    const timer = new Timer();
+    const category = new Category();
+
     const routes = {
         // path: url
-        '/': new Timer(),
-        '/category': new Category(),
+        '/': timer,
+        '/category': category,
     };
 
     const render = async (path) => {

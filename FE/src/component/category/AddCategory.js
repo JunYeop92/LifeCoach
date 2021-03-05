@@ -1,4 +1,4 @@
-export default function AddCategory({ $target }) {
+export default function AddCategory({ $target, onAdd }) {
     this.state = {
         category: '',
     };
@@ -14,5 +14,17 @@ export default function AddCategory({ $target }) {
         this.$element = $inputBox;
     };
 
+    this.attachEvent = () => {
+        this.$element.querySelector('#add').addEventListener('click', () => {
+            const $input = this.$element.getElementsByTagName('input')[0];
+            onAdd($input.value);
+            $input.value = '';
+            $input.focus();
+        });
+    };
+
+    this.render = () => {};
+
     this.initialize();
+    this.attachEvent();
 }
