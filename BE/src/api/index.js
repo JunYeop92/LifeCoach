@@ -7,17 +7,34 @@ const api = new Router();
 api.get('/', async (ctx) => {});
 
 api.post('/', async (ctx) => {
-    const { category, ymd, isEnd, insertDate } = ctx.request.body;
+    const { category, ymd, startDate, endDate, totalTime } = ctx.request.body;
     const time = new Time({
         category,
         ymd,
-        isEnd,
-        insertDate,
+        startDate,
+        endDate,
+        totalTime,
     });
 
     try {
         await time.save();
         ctx.body = time;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+api.get('/total', async (ctx) => {
+    const { categoryId, ymd } = ctx.query;
+    try {
+        const list = await Time.find()
+            .where('category').equals(categoryId)
+            .where('ymd').equals(ymd)
+            .sort('insertDate')
+            .select('isEnd insertDate')
+            .exec();
+        console.log(list);
+        ctx.body = list;
     } catch (e) {
         ctx.throw(500, e);
     }

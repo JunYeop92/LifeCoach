@@ -1,6 +1,4 @@
-import * as api from '../../api/time.js';
-
-export default function MeasureTime({ $target, setTotal }) {
+export default function MeasureTime({ $target, onSubmit }) {
     this.state = {
         start: null, //Date형
         end: null, //Date형
@@ -32,31 +30,32 @@ export default function MeasureTime({ $target, setTotal }) {
             console.log('start');
             this.$element.querySelector('#start-btn').style.display = 'none';
             this.$element.querySelector('#end-btn').style.display = 'inline-block';
-            const ymd = getYmd(this.state.start);
-            api.insert({
-                category: 'study',
-                ymd: ymd,
-                isEnd: false,
-                insertDate: this.state.start,
-            });
         });
+
         this.$element.querySelector('#end-btn').addEventListener('click', (e) => {
             if (this.state.TIME_ID) {
                 clearTimeout(this.state.TIME_ID);
-                const { hour, min } = this.state;
-                const totalTime = hour * 60 + min;
-                setTotal(totalTime);
                 console.log('end');
                 this.$element.querySelector('#start-btn').style.display = 'inline-block';
                 this.$element.querySelector('#end-btn').style.display = 'none';
 
-                const ymd = getYmd(this.state.end);
-                api.insert({
-                    category: 'study',
-                    ymd: ymd,
-                    isEnd: true,
-                    insertDate: this.state.end,
-                });
+                const { hour, min } = this.state;
+                const totalTime = hour * 60 + min;
+
+                if (totalTime > 0) {
+                    const ymd = getYmd(this.state.end);
+                    onSubmit({
+                        ymd,
+                        startDate: this.state.start,
+                        endDate: this.state.end,
+                        totalTime: totalTime,
+                    });
+                } else {
+                    alert('1분미만의 집중은 저장되지 않습니다.');
+                }
+
+                document.querySelector('#hour').innerText = '00';
+                document.querySelector('#min').innerText = '00';
             }
         });
     };

@@ -2,3 +2,11 @@
 #total {
     border: 1px solid;
 }
+
+ul {
+    display: flex;
+}
+li {
+    flex: auto;
+    list-style: none;
+}
