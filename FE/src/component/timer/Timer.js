@@ -6,22 +6,19 @@ import { insertTime, getTotal } from '../../api/time.js';
 
 export default function Timer() {
     this.state = {
-        totalTime: 0, // 분단위, max:24*60
+        todayTime: 0, // 분단위, max:24*60
         list: [],
         selectedCategory: {
             _id: '',
             content: '',
         },
+        init: false,
     };
 
     this.component;
     this.$element = document.createElement('div');
 
     this.initialize = () => {
-        // getTotal({
-        //     categoryId: '603f3af07e8ffe313c67999b',
-        //     ymd: '20210310',
-        // });
         const $container = this.$element;
         const measureTime = new MeasureTime({
             $target: $container,
@@ -35,7 +32,12 @@ export default function Timer() {
                 });
             },
         });
-        const recordTime = new RecordTime({ $target: $container });
+        const recordTime = new RecordTime({
+            $target: $container,
+            initialState: {
+                todayTime: this.state.todayTime,
+            },
+        });
 
         const listCategory = new ListCategory({
             $target: $container,
@@ -48,8 +50,11 @@ export default function Timer() {
                     ...this.state,
                     selectedCategory: { _id, content },
                 });
+
+                this.setStateAPI();
             },
         });
+
         this.component = {
             measureTime,
             recordTime,
@@ -60,11 +65,11 @@ export default function Timer() {
     this.setState = (nextState) => {
         this.state = nextState;
 
-        const { totalTime, list, selectedCategory } = this.state;
+        const { todayTime, list, selectedCategory } = this.state;
         const { recordTime, listCategory } = this.component;
 
         recordTime.setState({
-            totalTime,
+            todayTime,
         });
 
         listCategory.setState({
@@ -74,11 +79,25 @@ export default function Timer() {
     };
 
     this.setStateAPI = async () => {
-        const result = await api.listContents();
+        if (!this.state.init) {
+            //카테고리 리스트
+            const resultCate = await api.listContents();
+            this.setState({
+                ...this.state,
+                list: resultCate.data,
+                selectedCategory: resultCate.data[0],
+                init: true,
+            });
+        }
+        //오늘 집중시간
+        const ymd = getYmd(new Date());
+        const resultToday = await getTotal({
+            categoryId: this.state.selectedCategory._id,
+            ymd,
+        });
         this.setState({
             ...this.state,
-            list: result.data,
-            selectedCategory: result.data[0],
+            todayTime: resultToday.data,
         });
     };
 
@@ -88,3 +107,15 @@ export default function Timer() {
     this.initialize();
     this.setStateAPI();
 }
+
+const getYmd = (date) => {
+    const yy = date.getFullYear();
+    let mm = date.getMonth() + 1;
+    let dd = date.getDate();
+
+    mm = mm > 9 ? mm : '0' + mm;
+    dd = dd > 9 ? dd : '0' + dd;
+
+    const ymd = yy + '' + mm + '' + dd;
+    return ymd;
+};

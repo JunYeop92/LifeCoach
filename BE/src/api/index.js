@@ -24,17 +24,20 @@ api.post('/', async (ctx) => {
     }
 });
 
-api.get('/total', async (ctx) => {
+api.get('/todayTotal', async (ctx) => {
     const { categoryId, ymd } = ctx.query;
     try {
-        const list = await Time.find()
+        const resultList = await Time.find()
             .where('category').equals(categoryId)
             .where('ymd').equals(ymd)
             .sort('insertDate')
-            .select('isEnd insertDate')
+            .select('totalTime')
             .exec();
-        console.log(list);
-        ctx.body = list;
+
+        const sumTime = resultList.reduce((sum, { totalTime }) => {
+            return sum + totalTime;
+        }, 0);
+        ctx.body = sumTime;
     } catch (e) {
         ctx.throw(500, e);
     }
