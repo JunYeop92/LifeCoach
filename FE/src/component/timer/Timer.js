@@ -1,6 +1,7 @@
 import MeasureTime from './MeasureTime.js';
-import RecordTime from './RecordTime.js';
+import CumulativeTime from './CumulativeTime.js';
 import ListCategory from './ListCategory.js';
+import FocusRecord from './FocusRecord.js';
 import * as api from '../../api/category.js';
 import { insertTime, getTotal } from '../../api/time.js';
 
@@ -32,7 +33,7 @@ export default function Timer() {
                 });
             },
         });
-        const recordTime = new RecordTime({
+        const cumulativeTime = new CumulativeTime({
             $target: $container,
             initialState: {
                 todayTime: this.state.todayTime,
@@ -55,10 +56,15 @@ export default function Timer() {
             },
         });
 
+        const focusRecord = new FocusRecord({
+            $target: $container,
+        })
+
         this.component = {
             measureTime,
-            recordTime,
+            cumulativeTime,
             listCategory,
+            focusRecord,
         };
     };
 
@@ -66,9 +72,9 @@ export default function Timer() {
         this.state = nextState;
 
         const { todayTime, list, selectedCategory } = this.state;
-        const { recordTime, listCategory } = this.component;
+        const { cumulativeTime, listCategory } = this.component;
 
-        recordTime.setState({
+        cumulativeTime.setState({
             todayTime,
         });
 

@@ -1,11 +1,11 @@
-export default function RecordTime({ $target, initialState }) {
+export default function CumulativeTime({ $target, initialState }) {
     this.state = initialState;
     this.$element;
 
     this.initialize = () => {
         const $total = document.createElement('div');
-        $total.id = 'today';
-        $total.innerHTML = `<h1>TodayTime</h1>
+        $total.id = 'cumulative-time';
+        $total.innerHTML = `<h1>오늘</h1>
                             <span id='hour'>00</span>
                             <span>:</span> 
                             <span id='min'>00</span>`;

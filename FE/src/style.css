@@ -10,3 +10,7 @@ li {
     flex: auto;
     list-style: none;
 }
+
+#focus-record * {
+    border: 1px solid;
+}

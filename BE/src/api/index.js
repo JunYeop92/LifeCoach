@@ -43,6 +43,19 @@ api.get('/todayTotal', async (ctx) => {
     }
 });
 
+api.get('/record', async (ctx) => {
+    try {
+        const resultList = await Time.find()
+            .sort('-ymd')
+            .select('ymd startDate endDate totalTime')
+            .exec();
+
+        ctx.body = resultList;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
 api.post('/category', async (ctx) => {
     const { content } = ctx.request.body;
     const category = new Category({
