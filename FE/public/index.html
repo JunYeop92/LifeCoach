@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ASSISTANT</title>
+    <title>LifeCoach</title>
     
 </head>
 
@@ -44,16 +44,19 @@
         </div>
         <div id='main'>
             <div id='content'>
-                <div id='title'><span>웹 개발123456</span></div>
+                <div id='menu'>
+                    <div class='item active'>FOCUS</div>
+                    <div class='item'>TODAY</div>
+                    <div class='item'>WEEKLY</div>
+                </div>
                 <div id='timer-wrap'>
                     <div id='timer'><span>01:12</span></div>
                     <div id='btn'>
-                        <span>
-                            <i class="fas fa-play"></i>
-                        </span>
+                        <span><i class="fas fa-play-circle"></i></span>
                     </div>
                 </div>
-                <div id='today'><span>오늘</span><span>05:13</span></div>
+                <div id='title'><span>프로젝트 개발</span></div>
+                <!-- <div id='today'><span>오늘</span><span>05:13</span></div> -->
             </div>
         </div>
         <div id='footer'></div>
@@ -69,6 +72,16 @@
         dropbtn2.onclick = function(){
             dropbtn2.classList.toggle('click');
         }
+
+        const menuList = document.querySelectorAll('#menu .item');
+        menuList.forEach(ele => {
+            ele.addEventListener('click', event => {
+                menuList.forEach(ele2 => {
+                    ele2.classList.remove('active');
+                })
+                ele.classList.add('active');
+            })
+        })
     </script>
 </body>
 

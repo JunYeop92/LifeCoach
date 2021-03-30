@@ -19,9 +19,10 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%; /*비율은 부모 요소에 비례*/
-    background-image: url('asset/image/해안도로.jpg');
+    background-image: url('asset/image/서울야경.jpg');
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
 }
 
 #header {
@@ -67,7 +68,7 @@ body {
 #content {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 60%;
     height: 80%;
     align-items: center;
     justify-content: center;
@@ -75,8 +76,31 @@ body {
     font-weight: bold;
     margin-top: 7.5%;
     color: white;
-    background-color: rgba(0, 0, 0, 0.3);
+    /* background-color: rgba(0, 0, 0, 0.3); */
     border-radius: 7px;
+}
+
+#menu {
+    display: flex;
+    width: 65%;
+    justify-content:space-between;
+}
+
+#menu .item{
+    flex:1;
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid;
+    padding-top: 2%;
+    opacity: 0.7;
+}
+
+#menu .item:hover{
+    opacity: 1;
+}
+
+#menu .item.active{
+    opacity: 1;
 }
 
 #title {
@@ -96,9 +120,15 @@ body {
 
 #timer-wrap {
     margin-bottom: 1%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+}
+
+#timer-wrap:hover #btn {
+    display: block;
 }
 
 #timer {
@@ -109,17 +139,20 @@ body {
 }
 
 #btn {
-    margin-left: 5%;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
+    position: absolute;
+    right: 11%;
+    opacity: 0.7;
 }
 #btn span {
     font-size: 8vmin;
 }
 
-#btn:hover span {
+#btn:hover {
     color: black !important;
+    opacity: 1;
 }
 
 #today {
