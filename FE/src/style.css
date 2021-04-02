@@ -19,7 +19,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%; /*비율은 부모 요소에 비례*/
-    background-image: url('asset/image/서울야경.jpg');
+    background-image: url('asset/image/greenboy.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
