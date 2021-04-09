@@ -16,7 +16,7 @@
         </ul>
     </nav> -->
     <div id='app'>
-        <div id='header'>
+        <!-- <div id='header'>
             <div id='category'>
                 <div class="dropdown">
                     <div class="dropbtn">
@@ -56,33 +56,11 @@
                     </div>
                 </div>
                 <div id='title'><span>프로젝트 개발</span></div>
-                <!-- <div id='today'><span>오늘</span><span>05:13</span></div> -->
             </div>
         </div>
-        <div id='footer'></div>
+        <div id='footer'></div> -->
     </div>
     <script src='./index_bundle.js'></script>
-    <script>
-        const dropbtn = document.querySelector('#category .dropbtn');
-        dropbtn.onclick = function(){
-            dropbtn.classList.toggle('click');
-        }
-
-        const dropbtn2 = document.querySelector('#record .dropbtn');
-        dropbtn2.onclick = function(){
-            dropbtn2.classList.toggle('click');
-        }
-
-        const menuList = document.querySelectorAll('#menu .item');
-        menuList.forEach(ele => {
-            ele.addEventListener('click', event => {
-                menuList.forEach(ele2 => {
-                    ele2.classList.remove('active');
-                })
-                ele.classList.add('active');
-            })
-        })
-    </script>
 </body>
 
 </html>

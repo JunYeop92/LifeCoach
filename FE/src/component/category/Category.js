@@ -2,15 +2,18 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import * as api from '../../api/category.js';
 
-export default function Category() {
+export default function Category({$target}) {
     this.state = {
         list: [],
     };
     this.component;
-    this.$element = document.createElement('div');
 
     this.initialize = async () => {
-        const $container = this.$element;
+      
+        const {$header} = $target;
+
+        //tmp
+        const $container = document.createElement('div');
         const addCategory = new AddCategory({
             $target: $container,
             onAdd: async (content) => {
@@ -20,7 +23,7 @@ export default function Category() {
         });
 
         const listCategory = new ListCategory({
-            $target: $container,
+            $target: $header,
             initialState: {
                 list: this.state.list,
             },

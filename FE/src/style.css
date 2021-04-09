@@ -138,14 +138,20 @@ body {
     font-size: 28vmin;
 }
 
-#btn {
+#timer-wrap #btn {
     display: none;
     align-items: center;
     justify-content: center;
     position: absolute;
-    right: 11%;
+    right: 10%;
     opacity: 0.7;
+    top: 33%;
 }
+
+#timer-wrap #today {
+    color: #3E4348;
+}
+
 #btn span {
     font-size: 8vmin;
 }
@@ -155,13 +161,13 @@ body {
     opacity: 1;
 }
 
-#today {
+/* #today {
     width: 50%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     font-size: 10vmin;
-}
+} */
 
 #footer {
     height: 10%;

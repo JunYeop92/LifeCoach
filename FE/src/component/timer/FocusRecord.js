@@ -6,8 +6,17 @@ export default function FocusRecord({ $target }) {
     this.$element = document.createElement('div');
 
     this.initialize = async () => {
-        this.$element.id = 'focus-record';
+        this.$element.id = 'record';
+        this.$element.innerHTML = 
+        `<div class="dropdown">
+            <div class="dropbtn">
+                <span><i class="fas fa-history"></i></span>
+            </div>
+            <ul class="dropdown-list">
+            </ul>
+        </div>`;
         $target.appendChild(this.$element);
+        
         const result = await getRecord();
         console.log(result.data);
         this.state.list = result.data;
@@ -19,21 +28,29 @@ export default function FocusRecord({ $target }) {
             .map(({ ymd, endDate, startDate, totalTime }) => {
                 let str = '';
                 if (ymd !== oldYmd) {
-                    str = `<div class='ymd'>${ymd}</div>`;
+                    str = `<li class='ymd'>${ymd}</li>`;
                     oldYmd = ymd;
                 }
-                str += `<div class='date'>
+                str += `<li class='date'>
                             <span>${toHourMinFormat(startDate)} ~ ${toHourMinFormat(endDate)}</span>
                             <span>${totalTime}</span>
-                        </div>`;
+                        </li>`;
                 return str;
             })
             .join('');
-        this.$element.innerHTML = htmlString;
+        this.$element.querySelector('.dropdown-list').innerHTML = htmlString;
     };
     this.setState = () => {};
 
+    this.attachEvent = () => {
+        const $dropbtn = this.$element.querySelector('.dropbtn')
+        $dropbtn.addEventListener('click', (e) => {
+            $dropbtn.classList.toggle('click');
+        });
+    };
+
     this.initialize();
+    this.attachEvent();
 }
 
 const toHourMinFormat = (strDate) => {

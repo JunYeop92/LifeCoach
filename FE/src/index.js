@@ -5,8 +5,29 @@ import './style.css';
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/brands'
-// new Category(document.querySelector('#app'));
-// new Timer(document.querySelector('#app'));
+
+const $root = document.querySelector('#app');
+const $header = document.createElement('div');
+const $main = document.createElement('div');
+const $content = document.createElement('div');
+
+$header.id = 'header';
+$main.id = 'main';
+$content.id = 'content';
+
+$root.appendChild($header);
+$root.appendChild($main);
+$main.appendChild($content);
+new Category({
+    $target : {$header}
+});
+new Timer({ 
+    $target : {$header, $content}
+});
+
+
+
+
 
 // (function () {
 //     const root = document.querySelector('#app');

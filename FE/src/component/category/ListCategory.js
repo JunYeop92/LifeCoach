@@ -1,13 +1,20 @@
 export default function ListCategory({ $target, initialState, onDelete }) {
     this.state = initialState;
-    this.$element;
+    this.$element = document.createElement('div');
 
     this.initialize = () => {
-        const $list = document.createElement('div');
-        $list.id = 'category-list';
-        $target.appendChild($list);
-        this.$element = $list;
+        this.$element.id = 'category';
+        this.$element.innerHTML = 
+        `<div class="dropdown">
+            <div class="dropbtn">
+                <span><i class="fas fa-bars"></i></span>
+            </div>
+            <ul class="dropdown-list">
+            </ul>
+        </div>`;
+        $target.appendChild(this.$element);
     };
+
     this.render = () => {
         const htmlString = this.state.list
             .map(
@@ -15,14 +22,20 @@ export default function ListCategory({ $target, initialState, onDelete }) {
                     `<li id='${item._id}'>${item.content}<button id='${item._id}'>삭제</button></li>`
             )
             .join('');
-        this.$element.innerHTML = htmlString;
+        this.$element.querySelector('.dropdown-list').innerHTML = htmlString;    
     };
+
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
     };
 
     this.attachEvent = () => {
+        const $dropbtn = this.$element.querySelector('.dropbtn')
+        $dropbtn.addEventListener('click', (e) => {
+            $dropbtn.classList.toggle('click');
+        });
+
         const eventMap = {
             BUTTON: (e) => {
                 onDelete(e.target.id);

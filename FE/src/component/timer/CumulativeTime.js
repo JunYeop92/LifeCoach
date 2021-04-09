@@ -1,16 +1,15 @@
-export default function CumulativeTime({ $target, initialState }) {
+export default function CumulativeTime({ initialState }) {
     this.state = initialState;
-    this.$element;
+    this.$element = document.createElement('div');
 
     this.initialize = () => {
-        const $total = document.createElement('div');
-        $total.id = 'cumulative-time';
-        $total.innerHTML = `<h1>오늘</h1>
-                            <span id='hour'>00</span>
-                            <span>:</span> 
-                            <span id='min'>00</span>`;
-        $target.appendChild($total);
-        this.$element = $total;
+        this.$element.id = 'today';
+        this.$element.innerHTML = 
+        `<div id='timer'>   
+            <span id='hour'>00</span>
+            <span>:</span> 
+            <span id='min'>00</span>
+        </div>`
     };
     this.setState = (nextState) => {
         this.state = nextState;

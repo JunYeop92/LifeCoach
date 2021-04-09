@@ -1,4 +1,4 @@
-export default function MeasureTime({ $target, onSubmit }) {
+export default function MeasureTime({ onSubmit }) {
     this.state = {
         start: null, //Date형
         end: null, //Date형
@@ -6,21 +6,19 @@ export default function MeasureTime({ $target, onSubmit }) {
         hour: 0,
         min: 0,
     };
-    this.$element;
+    this.$element = document.createElement('div');
 
     this.initialize = () => {
-        const $timer = document.createElement('div');
-        $timer.id = 'timer';
-        $timer.innerHTML = `<span id='hour'>00</span>
-                                <span>:</span> 
-                                <span id='min'>00</span>`;
-        $target.appendChild($timer);
-
-        const $button = document.createElement('div');
-        $button.innerHTML = `<button type='button' id='start-btn'>시작</button>
-                            <button type='button' id='end-btn' style='display:none'>종료</button>`;
-        $timer.appendChild($button);
-        this.$element = $timer;
+        this.$element.innerHTML = 
+        `<div id='timer'>   
+            <span id='hour'>00</span>
+            <span>:</span> 
+            <span id='min'>00</span>
+        </div>
+        <div id='btn'>
+            <span id='start-btn'><i class="fas fa-play-circle"></i></span>
+            <span id='end-btn' style='display:none'><i class="fas fa-stop-circle"></i></span>
+        </div>`;
     };
 
     this.attachEvent = () => {
