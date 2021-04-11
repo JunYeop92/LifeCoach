@@ -1,6 +1,5 @@
 import MeasureTime from './MeasureTime.js';
 import CumulativeTime from './CumulativeTime.js';
-import ListCategory from './ListCategory.js';
 import FocusRecord from './FocusRecord.js';
 import Menu from './Menu.js';
 import * as api from '../../api/category.js';
@@ -12,7 +11,7 @@ export default function Timer({$target}) {
         list: [],
         selectedCategory: {
             _id: '',
-            content: '',
+            name: '',
         },
         init: false,
     };
@@ -22,6 +21,11 @@ export default function Timer({$target}) {
         const {$header, $content} = $target
         const $timerWrap = document.createElement('div');
         $timerWrap.id = 'timer-wrap'
+        const $timerTitle = document.createElement('div');
+        $timerTitle.id = 'timer-title'
+        $timerTitle.innerHTML = `<span>카테고리 선택</span>`;
+
+        
 
         const menu = new Menu({
             $target: $content,
@@ -31,7 +35,7 @@ export default function Timer({$target}) {
             }
         });
         $content.appendChild($timerWrap);
-        
+        $content.appendChild($timerTitle);
 
         const eventMap = {
             focus: () => {
@@ -64,22 +68,6 @@ export default function Timer({$target}) {
             },
         });
 
-        // const listCategory = new ListCategory({
-        //     $target: $content,
-        //     initialState: {
-        //         list: this.state.list,
-        //         selectedCategory: this.state.selectedCategory,
-        //     },
-        //     onSelect: ({ _id, content }) => {
-        //         this.setState({
-        //             ...this.state,
-        //             selectedCategory: { _id, content },
-        //         });
-
-        //         this.setStateAPI();
-        //     },
-        // });
-
         const focusRecord = new FocusRecord({
             $target: $header,
         })
@@ -88,7 +76,6 @@ export default function Timer({$target}) {
             menu,
             measureTime,
             cumulativeTime,
-            // listCategory,
             focusRecord,
         };
     };
@@ -97,47 +84,20 @@ export default function Timer({$target}) {
         this.state = nextState;
 
         const { todayTime, list, selectedCategory } = this.state;
-        // const { cumulativeTime, listCategory } = this.component;
         const { cumulativeTime } = this.component;
 
         cumulativeTime.setState({
             todayTime,
         });
 
-        // listCategory.setState({
-        //     selectedCategory,
-        //     list,
-        // });
+        document.querySelector('#timer-title').innerHTML = `<span>${this.state.selectedCategory.name}</span>`;
     };
 
-    // this.setStateAPI = async () => {
-    //     if (!this.state.init) {
-    //         //카테고리 리스트
-    //         const resultCate = await api.listContents();
-    //         this.setState({
-    //             ...this.state,
-    //             list: resultCate.data,
-    //             selectedCategory: resultCate.data[0],
-    //             init: true,
-    //         });
-    //     }
-    //     //오늘 집중시간
-    //     const ymd = getYmd(new Date());
-    //     const resultToday = await getTotal({
-    //         categoryId: this.state.selectedCategory._id,
-    //         ymd,
-    //     });
-    //     this.setState({
-    //         ...this.state,
-    //         todayTime: resultToday.data,
-    //     });
-    // };
 
     this.render = ($target) => {
         $target.appendChild(this.$element);
     };
     this.initialize();
-    // this.setStateAPI();
 }
 
 const getYmd = (date) => {

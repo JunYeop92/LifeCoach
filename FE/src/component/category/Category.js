@@ -2,7 +2,7 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import * as api from '../../api/category.js';
 
-export default function Category({$target}) {
+export default function Category({$target,handleListCategory}) {
     this.state = {
         list: [],
     };
@@ -31,6 +31,9 @@ export default function Category({$target}) {
                 await api.delContent({ id });
                 await this.setState();
             },
+            onSelect: ({_id,name}) => {
+                handleListCategory({_id,name})
+            }
         });
 
         this.component = {

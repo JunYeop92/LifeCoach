@@ -1,32 +1,31 @@
 import Timer from './component/timer/Timer.js';
 import Category from './component/category/Category.js';
+import App from './component/App.js';
 import './Normalize.css';
 import './style.css';
 import '@fortawesome/fontawesome-free/js/fontawesome'
 import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/brands'
 
-const $root = document.querySelector('#app');
-const $header = document.createElement('div');
-const $main = document.createElement('div');
-const $content = document.createElement('div');
+new App();
+// const $root = document.querySelector('#app');
+// const $header = document.createElement('div');
+// const $main = document.createElement('div');
+// const $content = document.createElement('div');
 
-$header.id = 'header';
-$main.id = 'main';
-$content.id = 'content';
+// $header.id = 'header';
+// $main.id = 'main';
+// $content.id = 'content';
 
-$root.appendChild($header);
-$root.appendChild($main);
-$main.appendChild($content);
-new Category({
-    $target : {$header}
-});
-new Timer({ 
-    $target : {$header, $content}
-});
-
-
-
+// $root.appendChild($header);
+// $root.appendChild($main);
+// $main.appendChild($content);
+// const category = new Category({
+//     $target : {$header}
+// });
+// const timer = new Timer({ 
+//     $target : {$header, $content}
+// });
 
 
 // (function () {

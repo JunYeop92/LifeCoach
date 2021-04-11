@@ -1,4 +1,4 @@
-export default function ListCategory({ $target, initialState, onDelete }) {
+export default function ListCategory({ $target, initialState, onDelete, onSelect }) {
     this.state = initialState;
     this.$element = document.createElement('div');
 
@@ -19,7 +19,10 @@ export default function ListCategory({ $target, initialState, onDelete }) {
         const htmlString = this.state.list
             .map(
                 (item) =>
-                    `<li id='${item._id}'>${item.content}<button id='${item._id}'>삭제</button></li>`
+                    `<li id='${item._id}'>
+                        <span>${item.content}</span>
+                        <button id='${item._id}'>삭제</button>
+                    </li>`
             )
             .join('');
         this.$element.querySelector('.dropdown-list').innerHTML = htmlString;    
@@ -40,8 +43,13 @@ export default function ListCategory({ $target, initialState, onDelete }) {
             BUTTON: (e) => {
                 onDelete(e.target.id);
             },
+            SPAN: (e) => {
+                onSelect({
+                    _id: e.target.parentNode.id,
+                    name: e.target.textContent,
+                });
+            },
         };
-
         const otherWise = () => {
             console.log('otherwise');
         };
