@@ -6,4 +6,4 @@ export const insertTime = ({ category, ymd, startDate, endDate, totalTime }) =>
 export const getTotal = ({ categoryId, ymd }) =>
     axios.get('/api/todayTotal', { params: { categoryId, ymd } });
 
-export const getRecord = () => axios.get('/api/record');
+export const getRecord = ({categoryId}) => axios.get('/api/record' , { params: { categoryId } });

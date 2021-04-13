@@ -1,8 +1,5 @@
-import { getRecord } from '../../api/time.js';
-export default function FocusRecord({ $target }) {
-    this.state = {
-        list: [],
-    }; //api로 여기에서 get, 다른 쪽에서 사용할 일 없는 것이니깐
+export default function FocusRecord({ $target, initialState }) {
+    this.state = initialState;
     this.$element = document.createElement('div');
 
     this.initialize = async () => {
@@ -16,15 +13,16 @@ export default function FocusRecord({ $target }) {
             </ul>
         </div>`;
         $target.appendChild(this.$element);
-        
-        const result = await getRecord();
-        console.log(result.data);
-        this.state.list = result.data;
+    };
+
+    this.setState = (nextState) => {
+        this.state = nextState;
         this.render();
     };
+
     this.render = () => {
         let oldYmd = 0;
-        const htmlString = this.state.list
+        const htmlString = this.state.recordList
             .map(({ ymd, endDate, startDate, totalTime }) => {
                 let str = '';
                 if (ymd !== oldYmd) {
@@ -40,7 +38,6 @@ export default function FocusRecord({ $target }) {
             .join('');
         this.$element.querySelector('.dropdown-list').innerHTML = htmlString;
     };
-    this.setState = () => {};
 
     this.attachEvent = () => {
         const $dropbtn = this.$element.querySelector('.dropbtn')

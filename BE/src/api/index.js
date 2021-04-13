@@ -44,12 +44,13 @@ api.get('/todayTotal', async (ctx) => {
 });
 
 api.get('/record', async (ctx) => {
+    const { categoryId, ymd } = ctx.query;
     try {
         const resultList = await Time.find()
+            .where('category').equals(categoryId)
             .sort('-ymd')
             .select('ymd startDate endDate totalTime')
             .exec();
-
         ctx.body = resultList;
     } catch (e) {
         ctx.throw(500, e);

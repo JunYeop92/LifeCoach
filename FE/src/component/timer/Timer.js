@@ -2,13 +2,12 @@ import MeasureTime from './MeasureTime.js';
 import CumulativeTime from './CumulativeTime.js';
 import FocusRecord from './FocusRecord.js';
 import Menu from './Menu.js';
-import * as api from '../../api/category.js';
-import { insertTime, getTotal } from '../../api/time.js';
+import { insertTime, getTotal, getRecord } from '../../api/time.js';
 
 export default function Timer({$target}) {
     this.state = {
         todayTime: 0, // 분단위, max:24*60
-        list: [],
+        recordList: [],
         selectedCategory: {
             _id: '',
             name: '',
@@ -24,8 +23,6 @@ export default function Timer({$target}) {
         const $timerTitle = document.createElement('div');
         $timerTitle.id = 'timer-title'
         $timerTitle.innerHTML = `<span>카테고리 선택</span>`;
-
-        
 
         const menu = new Menu({
             $target: $content,
@@ -50,13 +47,24 @@ export default function Timer({$target}) {
         };
 
         const measureTime = new MeasureTime({
-            onSubmit: ({ ymd, startDate, endDate, totalTime }) => {
-                insertTime({
+            onSubmit: async ({ ymd, startDate, endDate, totalTime }) => {
+                await insertTime({
                     category: this.state.selectedCategory._id,
                     ymd,
                     startDate,
                     endDate,
                     totalTime,
+                });
+
+                const resultToday = await getTotal({
+                    categoryId: this.state.selectedCategory._id,
+                    ymd,
+                });
+                const resultRecord = await getRecord({categoryId : this.state.selectedCategory._id});
+                this.setState({
+                    ...this.state,
+                    todayTime: resultToday.data,
+                    recordList : resultRecord.data
                 });
             },
         });
@@ -70,6 +78,9 @@ export default function Timer({$target}) {
 
         const focusRecord = new FocusRecord({
             $target: $header,
+            initialState : {
+                recordList : this.state.recordList
+            }
         })
 
         this.component = {
@@ -82,13 +93,16 @@ export default function Timer({$target}) {
 
     this.setState = (nextState) => {
         this.state = nextState;
-
-        const { todayTime, list, selectedCategory } = this.state;
-        const { cumulativeTime } = this.component;
+        const { todayTime, recordList } = this.state;
+        const { cumulativeTime, focusRecord } = this.component;
 
         cumulativeTime.setState({
             todayTime,
         });
+
+        focusRecord.setState({
+            recordList
+        })
 
         document.querySelector('#timer-title').innerHTML = `<span>${this.state.selectedCategory.name}</span>`;
     };

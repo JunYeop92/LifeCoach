@@ -2,17 +2,15 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import * as api from '../../api/category.js';
 
-export default function Category({$target,handleListCategory}) {
+export default function Category({ $target, handleSelListCategory, handleDelListCategory }) {
     this.state = {
         list: [],
     };
     this.component;
 
     this.initialize = async () => {
-      
-        const {$header} = $target;
+        const { $header } = $target;
 
-        //tmp
         const $container = document.createElement('div');
         const addCategory = new AddCategory({
             $target: $container,
@@ -30,10 +28,11 @@ export default function Category({$target,handleListCategory}) {
             onDelete: async (id) => {
                 await api.delContent({ id });
                 await this.setState();
+                handleDelListCategory();
             },
-            onSelect: ({_id,name}) => {
-                handleListCategory({_id,name})
-            }
+            onSelect: ({ _id, name }) => {
+                handleSelListCategory({ _id, name });
+            },
         });
 
         this.component = {
