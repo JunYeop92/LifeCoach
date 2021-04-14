@@ -1,8 +1,8 @@
 import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
-import * as api from '../../api/category.js';
+import {addContent, listContents, delContent} from '../../api/category.js';
 
-export default function Category({ $target, handleSelListCategory, handleDelListCategory }) {
+export default function Category({ $target, updateTimer }) {
     this.state = {
         list: [],
     };
@@ -15,23 +15,30 @@ export default function Category({ $target, handleSelListCategory, handleDelList
         const addCategory = new AddCategory({
             $target: $container,
             onAdd: async (content) => {
-                await api.addContent({ content });
-                await this.setState();
+                await addContent({ content });
+                const result = await listContents();
+                this.setState({
+                    ...this.state,
+                    list : result.data
+                });
             },
         });
-
+        
         const listCategory = new ListCategory({
             $target: $header,
             initialState: {
                 list: this.state.list,
             },
             onDelete: async (id) => {
-                await api.delContent({ id });
-                await this.setState();
-                handleDelListCategory();
+                await delContent({ id });
+                const result = await listContents();
+                this.setState({
+                    ...this.state,
+                    list : result.data
+                });
             },
             onSelect: ({ _id, name }) => {
-                handleSelListCategory({ _id, name });
+                updateTimer({ _id, name });
             },
         });
 
@@ -40,23 +47,21 @@ export default function Category({ $target, handleSelListCategory, handleDelList
             listCategory,
         };
 
-        await this.setState();
-    };
-
-    this.setState = async () => {
-        const result = await api.listContents();
-        this.state = {
+        const result = await listContents();
+        this.setState({
             ...this.state,
-            list: result.data,
-        };
-        this.component.listCategory.setState({
-            list: this.state.list,
+            list : result.data
         });
     };
 
-    this.initialize();
-
-    this.render = ($target) => {
-        $target.appendChild(this.$element);
+    this.setState =  (nextState) => {
+        this.state = nextState;
+        this.component.listCategory.setState({
+            list: this.state.list,
+        });
+        updateTimer({categoryList : this.state.list});
     };
+    this.render = () => {};
+
+    this.initialize();
 }
