@@ -65,7 +65,7 @@ export default function App() {
             }
         };
         this.component.timer.setState({
-            ...timer.state,
+            ...this.component.timer.state,
             selectedCategory: { _id: result.data[0]._id, name: result.data[0].content },
             recordList: resultRecord.data,
         });
@@ -88,7 +88,7 @@ export default function App() {
             }
         };
         this.component.timer.setState({
-            ...timer.state,
+            ...this.component.timer.state,
             todayTime: resultToday.data,
             selectedCategory: { _id, name },
             recordList: resultRecord.data,

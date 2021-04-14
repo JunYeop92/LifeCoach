@@ -12,7 +12,6 @@ export default function Timer({$target}) {
             _id: '',
             name: '',
         },
-        init: false,
     };
     this.component;
 

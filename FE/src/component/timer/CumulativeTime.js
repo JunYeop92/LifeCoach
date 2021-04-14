@@ -18,7 +18,6 @@ export default function CumulativeTime({ initialState }) {
     this.render = () => {
         const hour = Math.floor(this.state.todayTime / 60);
         const min = this.state.todayTime % 60;
-
         this.$element.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
         this.$element.querySelector('#min').innerText = min > 9 ? min : '0' + min;
     };
