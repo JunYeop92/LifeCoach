@@ -1,3 +1,5 @@
+import { getYmd } from "../../util.js";
+
 export default function MeasureTime({ onSubmit }) {
     this.state = {
         start: null, //Date형
@@ -76,15 +78,3 @@ export default function MeasureTime({ onSubmit }) {
     this.initialize();
     this.attachEvent();
 }
-
-const getYmd = (date) => {
-    const yy = date.getFullYear();
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
-
-    mm = mm > 9 ? mm : '0' + mm;
-    dd = dd > 9 ? dd : '0' + dd;
-
-    const ymd = yy + '' + mm + '' + dd;
-    return ymd;
-};

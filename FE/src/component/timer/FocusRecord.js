@@ -1,3 +1,5 @@
+import { toHourMinFormat } from "../../util.js";
+
 export default function FocusRecord({ $target, initialState }) {
     this.state = initialState;
     this.$element = document.createElement('div');
@@ -49,11 +51,3 @@ export default function FocusRecord({ $target, initialState }) {
     this.initialize();
     this.attachEvent();
 }
-
-const toHourMinFormat = (strDate) => {
-    const date = new Date(strDate);
-    const hour = date.getHours();
-    const min = date.getMinutes();
-
-    return (hour > 9 ? hour : '0' + hour) + ':' + (min > 9 ? min : '0' + min);
-};

@@ -3,6 +3,7 @@ import CumulativeTime from './CumulativeTime.js';
 import FocusRecord from './FocusRecord.js';
 import Menu from './Menu.js';
 import { insertTime, getTotal, getRecord } from '../../api/time.js';
+import { getYmd } from "../../util.js";
 
 export default function Timer({ $target }) {
     this.state = {
@@ -113,15 +114,3 @@ export default function Timer({ $target }) {
 
     this.initialize();
 }
-
-const getYmd = (date) => {
-    const yy = date.getFullYear();
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
-
-    mm = mm > 9 ? mm : '0' + mm;
-    dd = dd > 9 ? dd : '0' + dd;
-
-    const ymd = yy + '' + mm + '' + dd;
-    return ymd;
-};
