@@ -1,7 +1,7 @@
 import Timer from './timer/Timer.js';
 import Category from './category/Category.js';
-import { getTotal, getRecord } from '../api/time.js';
-import { listContents } from '../api/category.js';
+import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
+import { getYmd, getWeek } from "../util.js";
 
 export default function App() {
     this.state;
@@ -38,19 +38,29 @@ export default function App() {
         const {timer} = this.component;
         const categoryId = _id || categoryList[0]._id;
         const categoryName = name || categoryList[0].content;
+        
         const ymd = getYmd(new Date());
+        const {startWeekDate, endWeekDate} = getWeek();
+        const startYmd = getYmd(startWeekDate);
+        const endYmd = getYmd(endWeekDate);
 
-        const resultToday = await getTotal({
+        const resultToday = await getTodayTime({
             categoryId,
             ymd,
         });
+        const resultWeekly = await getWeeklyTime({
+            categoryId,
+            startYmd,
+            endYmd,
+        });
         const resultRecord = await getRecord({categoryId});
-        
+
         timer.setState({
             ...timer.state,
             selectedCategory: { _id: categoryId, name: categoryName },
             recordList: resultRecord.data,
             todayTime: resultToday.data,
+            weeklyTime : resultWeekly.data
         });
     }
 
@@ -60,14 +70,9 @@ export default function App() {
     this.initialize();
 }
 
-const getYmd = (date) => {
-    const yy = date.getFullYear();
-    let mm = date.getMonth() + 1;
-    let dd = date.getDate();
 
-    mm = mm > 9 ? mm : '0' + mm;
-    dd = dd > 9 ? dd : '0' + dd;
 
-    const ymd = yy + '' + mm + '' + dd;
-    return ymd;
-};
+ 
+// test code
+// var Dates = new Date().getWeek();
+// alert(Dates[0].toLocaleDateString() + ' to '+ Dates[1].toLocaleDateString());

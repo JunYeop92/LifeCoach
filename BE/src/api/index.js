@@ -24,12 +24,32 @@ api.post('/', async (ctx) => {
     }
 });
 
-api.get('/todayTotal', async (ctx) => {
+api.get('/todayTime', async (ctx) => {
     const { categoryId, ymd } = ctx.query;
     try {
         const resultList = await Time.find()
             .where('category').equals(categoryId)
             .where('ymd').equals(ymd)
+            .sort('insertDate')
+            .select('totalTime')
+            .exec();
+
+        const sumTime = resultList.reduce((sum, { totalTime }) => {
+            return sum + totalTime;
+        }, 0);
+        ctx.body = sumTime;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+api.get('/weeklyTime', async (ctx) => {
+    const { categoryId, startYmd, endYmd } = ctx.query;
+    try {
+        const resultList = await Time.find()
+            .where('category').equals(categoryId)
+            .where('ymd').gte(startYmd)
+            .where('ymd').lte(endYmd)
             .sort('insertDate')
             .select('totalTime')
             .exec();

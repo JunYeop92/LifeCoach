@@ -149,7 +149,11 @@ body {
 }
 
 #timer-wrap #today {
-    color: #3e4348;
+    color: #fa9595;
+}
+
+#timer-wrap #weekly {
+    color: #6AAFE6;
 }
 
 #btn span {

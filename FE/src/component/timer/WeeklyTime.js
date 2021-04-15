@@ -1,9 +1,9 @@
-export default function CumulativeTime({ initialState }) {
+export default function WeeklyTime({ initialState }) {
     this.state = initialState;
     this.$element = document.createElement('div');
 
     this.initialize = () => {
-        this.$element.id = 'today';
+        this.$element.id = 'weekly';
         this.$element.innerHTML = 
         `<div id='timer'>   
             <span id='hour'>00</span>
