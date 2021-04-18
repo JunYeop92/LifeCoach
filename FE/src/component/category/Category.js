@@ -11,19 +11,6 @@ export default function Category({ $target, updateTimer }) {
     this.initialize = async () => {
         const { $header } = $target;
 
-        const $container = document.createElement('div');
-        const addCategory = new AddCategory({
-            $target: $container,
-            onAdd: async (content) => {
-                await addContent({ content });
-                const result = await listContents();
-                this.setState({
-                    ...this.state,
-                    list : result.data
-                });
-            },
-        });
-        
         const listCategory = new ListCategory({
             $target: $header,
             initialState: {
@@ -39,6 +26,18 @@ export default function Category({ $target, updateTimer }) {
             },
             onSelect: ({ _id, name }) => {
                 updateTimer({ _id, name });
+            },
+        });
+
+        const addCategory = new AddCategory({
+            $target: document.querySelector('#category .dropdown-list'),
+            onAdd: async (content) => {
+                await addContent({ content });
+                const result = await listContents();
+                this.setState({
+                    ...this.state,
+                    list : result.data
+                });
             },
         });
 

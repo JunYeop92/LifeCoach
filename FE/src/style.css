@@ -50,11 +50,11 @@ body {
     color: white;
 }
 
-#category div {
+#category > div {
     padding-left: 12%;
 }
 
-#record div {
+#record > div {
     padding-right: 15%;
 }
 
@@ -188,6 +188,10 @@ li {
     list-style: none;
 }
 
+input:focus{
+    outline: none;
+}
+
 .dropdown {
     position: relative;
 }
@@ -228,7 +232,37 @@ li {
 #category .dropdown-list {
     top: 47px;
     left: 10px;
-    width: 200px;
+    width: 250px;
+}
+
+#category #add {
+    border-top : 2px solid rgba(255, 255, 255, 0.5);
+    display: flex;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+}
+
+#category #add input{
+    height: 30px;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid white;
+    color: white;
+    opacity: 0.5;
+}
+
+#category #add input:focus{
+    opacity: 1;
+}
+
+#category #add span{
+    padding-left: 5%;
+    opacity: 0.5;
+}
+
+#category #add span:hover{
+    opacity: 1;
 }
 
 #category .dropdown-list::before {
@@ -236,7 +270,7 @@ li {
     left: 13px;
 }
 
-#category .dropbtn.click + .dropdown-list {
+#category .dropbtn.click ~ .dropdown-list {
     display: block;
     animation: rotateMenu 400ms ease-in-out forwards;
     transform-origin: top center;

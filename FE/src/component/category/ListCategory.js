@@ -9,8 +9,9 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
             <div class="dropbtn">
                 <span><i class="fas fa-bars"></i></span>
             </div>
-            <ul class="dropdown-list">
-            </ul>
+            <div class="dropdown-list">
+                <ul id="list"></ul>
+            </div>
         </div>`;
         $target.appendChild(this.$element);
     };
@@ -25,7 +26,7 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
                     </li>`
             )
             .join('');
-        this.$element.querySelector('.dropdown-list').innerHTML = htmlString;    
+        this.$element.querySelector('.dropdown-list #list').innerHTML = htmlString;    
     };
 
     this.setState = (nextState) => {
