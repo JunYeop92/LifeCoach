@@ -9,6 +9,19 @@ export default function App() {
 
     this.initialize = async () => {
         const $root = document.querySelector('#app');
+        $root.addEventListener('click', (e) => {
+            const targetId = (e.target.tagName == 'path') ? e.target.parentNode.id : e.target.id;
+
+            const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
+            if(!($categoryBtn.querySelector(`#${targetId}`)) ){
+                $categoryBtn.classList.remove('click');
+            }
+
+            const $recordBtn = e.currentTarget.querySelector('#record .dropbtn');
+            if(!($recordBtn.querySelector(`#${targetId}`)) ){
+                $recordBtn.classList.remove('click');
+            }
+        });
         const $header = document.createElement('div');
         const $main = document.createElement('div');
         const $content = document.createElement('div');
@@ -36,6 +49,8 @@ export default function App() {
 
     const updateTimer = async ({categoryList, _id, name}) => {
         const {timer} = this.component;
+        console.log('오류');
+        console.log(categoryList);
         const categoryId = _id || categoryList[0]._id;
         const categoryName = name || categoryList[0].content;
         

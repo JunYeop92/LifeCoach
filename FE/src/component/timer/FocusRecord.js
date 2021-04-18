@@ -9,7 +9,7 @@ export default function FocusRecord({ $target, initialState }) {
         this.$element.innerHTML = 
         `<div class="dropdown">
             <div class="dropbtn">
-                <span><i class="fas fa-history"></i></span>
+                <span><i class="fas fa-history" id="record-menu"></i></span>
             </div>
             <ul class="dropdown-list">
             </ul>

@@ -7,7 +7,7 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
         this.$element.innerHTML = 
         `<div class="dropdown">
             <div class="dropbtn">
-                <span><i class="fas fa-bars"></i></span>
+                <span><i class="fas fa-bars" id="category-menu"></i></span>
             </div>
             <div class="dropdown-list">
                 <ul id="list"></ul>
