@@ -25,6 +25,7 @@ export default function App() {
                 }
             }
         });
+        
         const $header = document.createElement('div');
         const $main = document.createElement('div');
         const $content = document.createElement('div');

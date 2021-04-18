@@ -208,7 +208,26 @@ input:focus{
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 3px;
     z-index: 2;
+
+    max-height: 500px;
+    overflow: auto;
 }
+
+/* 스크롤바 전체 */
+.dropdown-list::-webkit-scrollbar {
+    width: 18px;
+}
+
+/*스크롤 막대 */
+.dropdown-list::-webkit-scrollbar-thumb {
+    background-color: white; 
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 50px;
+}
+
+/*스크롤 막대 외부 */
+/* .dropdown-list::-webkit-scrollbar-track {} */
 
 .dropdown-list::before {
     content: '';
