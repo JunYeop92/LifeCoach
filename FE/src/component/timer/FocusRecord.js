@@ -38,7 +38,8 @@ export default function FocusRecord({ $target, initialState }) {
                 return str;
             })
             .join('');
-        this.$element.querySelector('.dropdown-list').innerHTML = htmlString;
+   
+        this.$element.querySelector('.dropdown-list').innerHTML = (htmlString || `<li>이력 없음<li>` );
     };
 
     this.attachEvent = () => {

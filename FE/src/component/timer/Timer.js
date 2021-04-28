@@ -6,7 +6,7 @@ import Menu from './Menu.js';
 import { insertTime, getTodayTime, getWeeklyTime, getRecord } from '../../api/time.js';
 import { getYmd, getWeek } from "../../util.js";
 
-export default function Timer({ $target }) {
+export default function Timer({ $target, loading }) {
     this.state = {
         todayTime: 0, // 분단위, max:24*60
         weeklyTime : 0,
@@ -28,6 +28,9 @@ export default function Timer({ $target }) {
         //FOCUS
         const measureTime = new MeasureTime({
             onSubmit: async ({ ymd, startDate, endDate, totalTime }) => {
+                loading.setState({
+                    isLoading: true,
+                });
                 await insertTime({
                     category: this.state.selectedCategory._id,
                     ymd,
@@ -54,6 +57,9 @@ export default function Timer({ $target }) {
                 const resultRecord = await getRecord({
                     categoryId: this.state.selectedCategory._id,
                 });
+                loading.setState({
+                    isLoading : false
+                })
 
                 this.setState({
                     ...this.state,

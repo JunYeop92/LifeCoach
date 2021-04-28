@@ -2,6 +2,7 @@ import Timer from './timer/Timer.js';
 import Category from './category/Category.js';
 import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
 import { getYmd, getWeek } from '../util.js';
+import Loading from './Loading.js';
 
 export default function App() {
     this.state;
@@ -12,8 +13,12 @@ export default function App() {
         $root.addEventListener('click', (e) => {
             const targetId =
                 (e.target.tagName == 'path') ? e.target.parentNode.id : e.target.id;
+            
+            //숫자체크
+            const myReg = /\d/g;
+            const result = myReg.test(targetId);
 
-            if (targetId) {
+            if (targetId && !result) {
                 const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
                 if (!$categoryBtn.querySelector(`#${targetId}`)) {
                     $categoryBtn.classList.remove('click');
@@ -38,21 +43,30 @@ export default function App() {
         $root.appendChild($main);
         $main.appendChild($content);
 
+        const loading = new Loading({
+            $target: $root,
+            initialState : {
+                isLoading : false
+            }
+        })
         const category = new Category({
             $target: { $header },
             updateTimer,
+            loading
         });
         const timer = new Timer({
             $target: { $header, $content },
+            loading
         });
         this.component = {
             category,
             timer,
+            loading,
         };
     };
 
     const updateTimer = async ({ categoryList, _id, name }) => {
-        const { timer } = this.component;
+        const { timer, loading } = this.component;
         console.log('오류');
         console.log(categoryList);
         const categoryId = _id || categoryList[0]._id;
@@ -62,6 +76,10 @@ export default function App() {
         const { startWeekDate, endWeekDate } = getWeek();
         const startYmd = getYmd(startWeekDate);
         const endYmd = getYmd(endWeekDate);
+
+        loading.setState({
+            isLoading: true,
+        });
 
         const resultToday = await getTodayTime({
             categoryId,
@@ -73,6 +91,10 @@ export default function App() {
             endYmd,
         });
         const resultRecord = await getRecord({ categoryId });
+
+        loading.setState({
+            isLoading: false,
+        });
 
         timer.setState({
             ...timer.state,
