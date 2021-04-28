@@ -226,6 +226,11 @@ input:focus{
     overflow: auto;
 }
 
+.dropdown-list #title {
+    font-size: 2rem;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+    opacity: 1;
+}
 /* 스크롤바 전체 */
 .dropdown-list::-webkit-scrollbar {
     width: 18px;

@@ -26,7 +26,8 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
                     </li>`
             )
             .join('');
-        this.$element.querySelector('.dropdown-list #list').innerHTML = htmlString;    
+        this.$element.querySelector('.dropdown-list #list').innerHTML = 
+            `<li id='title'>카테고리</li> ${htmlString}`;    
     };
 
     this.setState = (nextState) => {
