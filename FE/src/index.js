@@ -8,6 +8,8 @@ import '@fortawesome/fontawesome-free/js/solid'
 import '@fortawesome/fontawesome-free/js/brands'
 
 new App();
+
+// 라우터
 // const $root = document.querySelector('#app');
 // const $header = document.createElement('div');
 // const $main = document.createElement('div');

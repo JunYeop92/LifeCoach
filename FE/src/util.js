@@ -34,7 +34,7 @@ export const getWeek = () => {
     const day = (today.getDay() || 7) - 1;
     const date = today.getDate() - day;
     const startWeekDate = new Date(today.setDate(date));
-    const endWeekDate = new Date(today.setDate(date + 6));
+    const endWeekDate = new Date(today.setDate(today.getDate() + 6));
   
     return {startWeekDate, endWeekDate};
 }
