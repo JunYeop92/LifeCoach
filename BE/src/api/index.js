@@ -104,6 +104,7 @@ api.delete('/category', async (ctx) => {
     const { id } = ctx.request.body;
     try {
         await Category.findByIdAndDelete(id).exec();
+        await Time.deleteMany({category:id});
         ctx.status = 204;
     } catch (e) {
         ctx.throw(500, e);

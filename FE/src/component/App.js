@@ -68,6 +68,7 @@ export default function App() {
     const updateTimer = async ({ categoryList, _id, name }) => {
         const { timer, loading } = this.component;
         console.log('오류');
+        console.log(_id);
         console.log(categoryList);
         const categoryId = _id || categoryList[0]._id;
         const categoryName = name || categoryList[0].content;
