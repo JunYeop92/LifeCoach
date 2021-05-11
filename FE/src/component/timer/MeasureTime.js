@@ -10,7 +10,7 @@ export default function MeasureTime({ onSubmit }) {
     };
     this.$element = document.createElement('div');
 
-    this.initialize = () => {
+    const initialize = (() => {
         this.$element.innerHTML = 
         `<div id='timer'>   
             <span id='hour'>00</span>
@@ -21,9 +21,25 @@ export default function MeasureTime({ onSubmit }) {
             <span id='start-btn'><i class="fas fa-play-circle"></i></span>
             <span id='end-btn' style='display:none'><i class="fas fa-stop-circle"></i></span>
         </div>`;
+    })();
+
+    this.setState = () => {
+        this.state.end = new Date();
+        const { start, end } = this.state;
+        this.state.hour = Math.floor((end - start) / (60000 * 60));
+        const hourRest = (end - start) % (60000 * 60);
+        this.state.min = Math.floor(hourRest / 60000);
+        this.state.TIME_ID = setTimeout(this.setState, 60000);
+        this.render();
     };
 
-    this.attachEvent = () => {
+    this.render = () => {
+        const { hour, min } = this.state;
+        document.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
+        document.querySelector('#min').innerText = min > 9 ? min : '0' + min;
+    };
+
+    const attachEvent = (() => {
         this.$element.querySelector('#start-btn').addEventListener('click', (e) => {
             this.state.start = new Date();
             this.setState();
@@ -58,23 +74,9 @@ export default function MeasureTime({ onSubmit }) {
                 document.querySelector('#min').innerText = '00';
             }
         });
-    };
+    })();
 
-    this.setState = () => {
-        this.state.end = new Date();
-        const { start, end } = this.state;
-        this.state.hour = Math.floor((end - start) / (60000 * 60));
-        const hourRest = (end - start) % (60000 * 60);
-        this.state.min = Math.floor(hourRest / 60000);
-        this.state.TIME_ID = setTimeout(this.setState, 60000);
-        this.render();
-    };
-    this.render = () => {
-        const { hour, min } = this.state;
-        document.querySelector('#hour').innerText = hour > 9 ? hour : '0' + hour;
-        document.querySelector('#min').innerText = min > 9 ? min : '0' + min;
-    };
-
-    this.initialize();
-    this.attachEvent();
+    this.attachNode = ($target) => {
+        $target.appendChild(this.$element);
+    }
 }

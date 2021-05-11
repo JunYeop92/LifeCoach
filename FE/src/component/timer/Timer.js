@@ -6,7 +6,7 @@ import Menu from './Menu.js';
 import { insertTime, getTodayTime, getWeeklyTime, getRecord } from '../../api/time.js';
 import { getYmd, getWeek } from "../../util.js";
 
-export default function Timer({ $target, loading }) {
+export default function Timer({ loading }) {
     this.state = {
         todayTime: 0, // 분단위, max:24*60
         weeklyTime : 0,
@@ -17,13 +17,18 @@ export default function Timer({ $target, loading }) {
         },
     };
     this.component;
+    this.$element;
 
-    this.initialize = () => {
-        const { $header, $content } = $target;
+    const initialize = () => {
         const $timerWrap = document.createElement('div');
         $timerWrap.id = 'timer-wrap';
         const $timerTitle = document.createElement('div');
         $timerTitle.id = 'timer-title';
+        
+        this.$element = {
+            $timerWrap,
+            $timerTitle,
+        }
 
         //FOCUS
         const measureTime = new MeasureTime({
@@ -69,7 +74,7 @@ export default function Timer({ $target, loading }) {
                 });
             },
         });
-        $timerWrap.appendChild(measureTime.$element); //default
+        
 
         //TODAY
         const cumulativeTime = new CumulativeTime({
@@ -86,29 +91,24 @@ export default function Timer({ $target, loading }) {
         });
 
         const menu = new Menu({
-            $target: $content,
             onClick: (id) => {
                 $timerWrap.innerHTML = '';
                 eventMap[id]();
             },
         });
-        $content.appendChild($timerWrap);
-        $content.appendChild($timerTitle);
-
         const eventMap = {
             focus: () => {
-                $timerWrap.appendChild(measureTime.$element);
+                measureTime.attachNode($timerWrap)
             },
             today: () => {
-                $timerWrap.appendChild(cumulativeTime.$element);
+                cumulativeTime.attachNode($timerWrap)
             },
             weekly: () => {
-                $timerWrap.appendChild(weeklyTime.$element);
+                weeklyTime.attachNode($timerWrap)
             },
         };
 
         const focusRecord = new FocusRecord({
-            $target: $header,
             initialState: {
                 recordList: this.state.recordList,
             },
@@ -137,11 +137,24 @@ export default function Timer({ $target, loading }) {
             recordList : this.state.recordList,
         });
         
-        document.querySelector(
-            '#timer-title'
-        ).innerHTML = `<span>${this.state.selectedCategory.name}</span>`;
+        this.$element.$timerTitle.innerHTML 
+            = `<span>${this.state.selectedCategory.name}</span>`;
     };
-    this.render = () => {};
+    
+    // this.render = () => {};
 
-    this.initialize();
+    this.attachNode = ($target) => {
+        const { $header, $content } = $target;
+        const { menu, measureTime, cumulativeTime, weeklyTime, focusRecord } = this.component;
+        const {$timerWrap, $timerTitle} = this.$element;
+        
+        menu.attachNode($content);
+        $content.appendChild($timerWrap);
+        $content.appendChild($timerTitle);
+        focusRecord.attachNode($header);
+        measureTime.attachNode($timerWrap); //menu 기본 선택(default)
+    }
+
+    initialize();
+    
 }

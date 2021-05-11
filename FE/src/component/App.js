@@ -8,56 +8,20 @@ export default function App() {
     this.state;
     this.component;
 
-    this.initialize = async () => {
-        const $root = document.querySelector('#app');
-        $root.addEventListener('click', (e) => {
-            const targetId =
-                (e.target.tagName == 'path') ? e.target.parentNode.id : e.target.id;
-            
-            //숫자체크
-            const myReg = /\d/g;
-            const result = myReg.test(targetId);
-
-            if (targetId && !result) {
-                const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
-                if (!$categoryBtn.querySelector(`#${targetId}`)) {
-                    $categoryBtn.classList.remove('click');
-                }
-
-                const $recordBtn = e.currentTarget.querySelector('#record .dropbtn');
-                if (!$recordBtn.querySelector(`#${targetId}`)) {
-                    $recordBtn.classList.remove('click');
-                }
-            }
-        });
-        
-        const $header = document.createElement('div');
-        const $main = document.createElement('div');
-        const $content = document.createElement('div');
-
-        $header.id = 'header';
-        $main.id = 'main';
-        $content.id = 'content';
-
-        $root.appendChild($header);
-        $root.appendChild($main);
-        $main.appendChild($content);
-
+    const initialize = () => {
         const loading = new Loading({
-            $target: $root,
-            initialState : {
-                isLoading : false
-            }
-        })
+            initialState: {
+                isLoading: false,
+            },
+        });
         const category = new Category({
-            $target: { $header },
             updateTimer,
-            loading
+            loading,
         });
         const timer = new Timer({
-            $target: { $header, $content },
-            loading
+            loading,
         });
+
         this.component = {
             category,
             timer,
@@ -67,6 +31,7 @@ export default function App() {
 
     const updateTimer = async ({ categoryList, _id, name }) => {
         const { timer, loading } = this.component;
+
         console.log('오류');
         console.log(_id);
         console.log(categoryList);
@@ -106,12 +71,54 @@ export default function App() {
         });
     };
 
-    this.setState = () => {};
-    this.render = () => {};
+    const attachEvent = () => {
+        document.querySelector('#app').addEventListener('click', (e) => {
+            const targetId =
+                e.target.tagName == 'path' ? e.target.parentNode.id : e.target.id;
 
-    this.initialize();
+            //숫자체크
+            const myReg = /\d/g;
+            const result = myReg.test(targetId);
+
+            if (targetId && !result) {
+                const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
+                if (!$categoryBtn.querySelector(`#${targetId}`)) {
+                    $categoryBtn.classList.remove('click');
+                }
+
+                const $recordBtn = e.currentTarget.querySelector('#record .dropbtn');
+                if (!$recordBtn.querySelector(`#${targetId}`)) {
+                    $recordBtn.classList.remove('click');
+                }
+            }
+        });
+    };
+
+    // this.setState = () => {};
+    // this.render = () => {};
+
+    this.attachNode = () => {
+        const { loading, category, timer } = this.component;
+
+        const $root = document.querySelector('#app');
+        const $header = document.createElement('div');
+        const $main = document.createElement('div');
+        const $content = document.createElement('div');
+
+        $header.id = 'header';
+        $main.id = 'main';
+        $content.id = 'content';
+
+        $root.appendChild($header);
+        $root.appendChild($main);
+        $main.appendChild($content);
+
+        loading.attachNode($root);
+        category.attachNode({$header});
+        timer.attachNode({$header, $content});
+    };
+
+    initialize();
+    attachEvent();
+    this.attachNode();
 }
-
-// test code
-// var Dates = new Date().getWeek();
-// alert(Dates[0].toLocaleDateString() + ' to '+ Dates[1].toLocaleDateString());

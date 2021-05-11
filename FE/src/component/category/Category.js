@@ -2,17 +2,14 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import { addContent, listContents, delContent } from '../../api/category.js';
 
-export default function Category({ $target, updateTimer, loading }) {
+export default function Category({ updateTimer, loading }) {
     this.state = {
         list: [],
     };
     this.component;
 
-    this.initialize = async () => {
-        const { $header } = $target;
-
+    const initialize = async () => {
         const listCategory = new ListCategory({
-            $target: $header,
             initialState: {
                 list: this.state.list,
             },
@@ -26,7 +23,6 @@ export default function Category({ $target, updateTimer, loading }) {
         });
 
         const addCategory = new AddCategory({
-            $target: document.querySelector('#category .dropdown-list'),
             onAdd: async (content) => {
                 await addContent({ content });
                 await getSetCommonState();
@@ -43,8 +39,7 @@ export default function Category({ $target, updateTimer, loading }) {
             listCategory,
         };
         
-        //초기화 리스트
-        getSetCommonState();
+        getSetCommonState(); //초기화
     };
 
     const getSetCommonState = async () => {
@@ -59,7 +54,7 @@ export default function Category({ $target, updateTimer, loading }) {
         loading.setState({
             isLoading: false,
         });
-    };
+    }
 
     this.setState = (nextState) => {
         this.state = nextState;
@@ -68,7 +63,15 @@ export default function Category({ $target, updateTimer, loading }) {
         });
         updateTimer({ categoryList: this.state.list });
     };
-    this.render = () => {};
+    // this.render = () => {};
 
-    this.initialize();
+    this.attachNode = ($target) => {
+        const { $header } = $target;
+        const { listCategory, addCategory } = this.component;
+
+        listCategory.attachNode($header);
+        addCategory.attachNode(document.querySelector('#category .dropdown-list'));
+    }
+
+    initialize();
 }

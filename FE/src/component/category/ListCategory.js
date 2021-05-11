@@ -1,8 +1,8 @@
-export default function ListCategory({ $target, initialState, onDelete, onSelect }) {
+export default function ListCategory({ initialState, onDelete, onSelect }) {
     this.state = initialState;
     this.$element = document.createElement('div');
 
-    this.initialize = () => {
+    const initialize = (() => {
         this.$element.id = 'category';
         this.$element.innerHTML = 
         `<div class="dropdown">
@@ -13,7 +13,11 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
                 <ul id="list"></ul>
             </div>
         </div>`;
-        $target.appendChild(this.$element);
+    })();
+
+    this.setState = (nextState) => {
+        this.state = nextState;
+        this.render();
     };
 
     this.render = () => {
@@ -30,12 +34,7 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
             `<li id='title'>카테고리</li> ${htmlString}`;    
     };
 
-    this.setState = (nextState) => {
-        this.state = nextState;
-        this.render();
-    };
-
-    this.attachEvent = () => {
+    const attachEvent = (() => {
         const $dropbtn = this.$element.querySelector('.dropbtn')
         $dropbtn.addEventListener('click', (e) => {
             $dropbtn.classList.toggle('click');
@@ -59,9 +58,11 @@ export default function ListCategory({ $target, initialState, onDelete, onSelect
         this.$element.addEventListener('click', (e) => {
             (eventMap[e.target.tagName] || otherWise)(e);
         });
-    };
+    })();
 
-    this.initialize();
-    this.render();
-    this.attachEvent();
+    this.attachNode = ($target) => {
+        $target.appendChild(this.$element);
+    }
+    
+    // this.render();
 }

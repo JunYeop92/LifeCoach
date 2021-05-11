@@ -1,6 +1,5 @@
-import Timer from './component/timer/Timer.js';
-import Category from './component/category/Category.js';
 import App from './component/App.js';
+
 import './Normalize.css';
 import './style.css';
 import '@fortawesome/fontawesome-free/js/fontawesome'
@@ -10,39 +9,27 @@ import '@fortawesome/fontawesome-free/js/brands'
 new App();
 
 // 라우터
-// const $root = document.querySelector('#app');
-// const $header = document.createElement('div');
-// const $main = document.createElement('div');
-// const $content = document.createElement('div');
-
-// $header.id = 'header';
-// $main.id = 'main';
-// $content.id = 'content';
-
-// $root.appendChild($header);
-// $root.appendChild($main);
-// $main.appendChild($content);
-// const category = new Category({
-//     $target : {$header}
-// });
-// const timer = new Timer({ 
-//     $target : {$header, $content}
-// });
-
-
 // (function () {
-//     const root = document.querySelector('#app');
+//     // const root = document.querySelector('#app');
 
-//     const timer = new Timer();
-//     const category = new Category();
+//     // const timer = new Timer();
+//     // const category = new Category();
+//     const app = new App();
+//     const { timer, todo } = app.component
+//     /* 
+//         / -> timer와 catergory 컴포넌트 
+//         /todo -> todo 컴포넌트만
+//     */
+
+
 
 //     const routes = {
 //         // path: url
 //         '/': timer,
-//         '/category': category,
+//         '/todo': todo,
 //     };
 
-//     const render = async (path) => {
+//     const render = (path) => {
 //         root.innerHTML = '';
 //         const renderComponent = routes[path];
 //         renderComponent.render(root);

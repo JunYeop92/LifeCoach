@@ -341,3 +341,7 @@ input:focus{
         transform: rotateX(0deg);
     }
 }
+
+#footer {
+    display: flex;
+}

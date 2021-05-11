@@ -1,10 +1,10 @@
 import { toHourMinFormat } from "../../util.js";
 
-export default function FocusRecord({ $target, initialState }) {
+export default function FocusRecord({ initialState }) {
     this.state = initialState;
     this.$element = document.createElement('div');
 
-    this.initialize = async () => {
+    const initialize = (() => {
         this.$element.id = 'record';
         this.$element.innerHTML = 
         `<div class="dropdown">
@@ -14,8 +14,7 @@ export default function FocusRecord({ $target, initialState }) {
             <ul class="dropdown-list">
             </ul>
         </div>`;
-        $target.appendChild(this.$element);
-    };
+    })();
 
     this.setState = (nextState) => {
         this.state = nextState;
@@ -43,13 +42,14 @@ export default function FocusRecord({ $target, initialState }) {
             `<li id='title'>집중이력</li>` + (htmlString || `<li>이력없음<li>` );
     };
 
-    this.attachEvent = () => {
+    const attachEvent = (() => {
         const $dropbtn = this.$element.querySelector('.dropbtn')
         $dropbtn.addEventListener('click', (e) => {
             $dropbtn.classList.toggle('click');
         });
-    };
+    })();
 
-    this.initialize();
-    this.attachEvent();
+    this.attachNode = ($target) => {
+        $target.appendChild(this.$element);
+    }
 }

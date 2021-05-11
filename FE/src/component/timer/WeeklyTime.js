@@ -2,7 +2,7 @@ export default function WeeklyTime({ initialState }) {
     this.state = initialState;
     this.$element = document.createElement('div');
 
-    this.initialize = () => {
+    const initialize = (() => {
         this.$element.id = 'weekly';
         this.$element.innerHTML = 
         `<div id='timer'>   
@@ -10,7 +10,8 @@ export default function WeeklyTime({ initialState }) {
             <span>:</span> 
             <span id='min'>00</span>
         </div>`;
-    };
+    })();
+
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
@@ -22,5 +23,7 @@ export default function WeeklyTime({ initialState }) {
         this.$element.querySelector('#min').innerText = min > 9 ? min : '0' + min;
     };
 
-    this.initialize();
+    this.attachNode = ($target) => {
+        $target.appendChild(this.$element);
+    }
 }

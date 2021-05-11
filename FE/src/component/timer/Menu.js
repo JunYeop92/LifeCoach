@@ -1,20 +1,19 @@
-export default function Menu({$target, onClick}){
-    this.state;
+export default function Menu({ onClick }){
+    // this.state;
     this.$element = document.createElement('div');
 
-    this.initialize = async () => {
+    const initialize = (() => {
         this.$element.id = 'menu';
         this.$element.innerHTML = 
         `<div id='focus' class='item active'>FOCUS</div>
         <div id='today' class='item'>TODAY</div>
         <div id='weekly' class='item'>WEEKLY</div>`;
-        $target.appendChild(this.$element);
-    };
+    })();
 
-    this.render = () => {};
-    this.setState = () => {};
+    // this.setState = () => {};
+    // this.render = () => {};
 
-    this.attachEvent = () => {
+    const attachEvent = (() => {
         //바로 밑 코드는 NodeList를 반환(element 객체가 아님 -> '$'를 안붙임)
         const menuList = this.$element.querySelectorAll('.item');
         menuList.forEach(ele => {
@@ -26,8 +25,9 @@ export default function Menu({$target, onClick}){
                 ele.classList.add('active');
             })
         })
-    };
+    })();
 
-    this.initialize();
-    this.attachEvent();
+    this.attachNode = ($target) => {
+        $target.appendChild(this.$element);
+    }
 }
