@@ -2,7 +2,7 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import { addContent, listContents, delContent } from '../../api/category.js';
 
-export default function Category({ updateTimer, loading }) {
+export default function Category({ selCategory, loading }) {
     this.state = {
         list: [],
     };
@@ -18,7 +18,7 @@ export default function Category({ updateTimer, loading }) {
                 await getSetCommonState();
             },
             onSelect: ({ _id, name }) => {
-                updateTimer({ _id, name });
+                selCategory({ _id, name });
             },
         });
 
@@ -26,11 +26,6 @@ export default function Category({ updateTimer, loading }) {
             onAdd: async (content) => {
                 await addContent({ content });
                 await getSetCommonState();
-                // const result = await listContents();
-                // this.setState({
-                //     ...this.state,
-                //     list: result.data,
-                // });
             },
         });
 
@@ -39,7 +34,7 @@ export default function Category({ updateTimer, loading }) {
             listCategory,
         };
         
-        getSetCommonState(); //초기화
+        getSetCommonState(); //초기화, App에서 첫번째
     };
 
     const getSetCommonState = async () => {
@@ -61,7 +56,7 @@ export default function Category({ updateTimer, loading }) {
         this.component.listCategory.setState({
             list: this.state.list,
         });
-        updateTimer({ categoryList: this.state.list });
+        selCategory({ categoryList: this.state.list });
     };
     // this.render = () => {};
 

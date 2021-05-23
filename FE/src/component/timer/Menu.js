@@ -3,9 +3,9 @@ export default function Menu({ onClick }){
     this.$element = document.createElement('div');
 
     const initialize = (() => {
-        this.$element.id = 'menu';
+        this.$element.id = 'timer-menu';
         this.$element.innerHTML = 
-        `<div id='focus' class='item active'>FOCUS</div>
+        `<div id='focus' class='item selected'>FOCUS</div>
         <div id='today' class='item'>TODAY</div>
         <div id='weekly' class='item'>WEEKLY</div>`;
     })();
@@ -20,9 +20,9 @@ export default function Menu({ onClick }){
             ele.addEventListener('click', event => {
                 onClick(event.target.id);
                 menuList.forEach(ele2 => {
-                    ele2.classList.remove('active');
+                    ele2.classList.remove('selected');
                 })
-                ele.classList.add('active');
+                ele.classList.add('selected');
             })
         })
     })();

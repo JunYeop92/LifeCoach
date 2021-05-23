@@ -1,8 +1,10 @@
 import Timer from './timer/Timer.js';
 import Category from './category/Category.js';
 import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
+import { getTodo } from '../api/todo.js';
 import { getYmd, getWeek } from '../util.js';
 import Loading from './Loading.js';
+import Todo from './todo/Todo.js';
 
 export default function App() {
     this.state;
@@ -15,26 +17,30 @@ export default function App() {
             },
         });
         const category = new Category({
-            updateTimer,
+            selCategory,
             loading,
         });
         const timer = new Timer({
             loading,
         });
+        const todo = new Todo({
+            loading
+        })
 
         this.component = {
             category,
             timer,
+            todo,
             loading,
         };
     };
 
-    const updateTimer = async ({ categoryList, _id, name }) => {
-        const { timer, loading } = this.component;
+    const selCategory = async ({ categoryList, _id, name }) => {
+        const { timer, todo, loading } = this.component;
 
-        console.log('오류');
-        console.log(_id);
-        console.log(categoryList);
+        // console.log('오류');
+        // console.log(_id);
+        // console.log(categoryList);
         const categoryId = _id || categoryList[0]._id;
         const categoryName = name || categoryList[0].content;
 
@@ -43,9 +49,7 @@ export default function App() {
         const startYmd = getYmd(startWeekDate);
         const endYmd = getYmd(endWeekDate);
 
-        loading.setState({
-            isLoading: true,
-        });
+        
 
         const resultToday = await getTodayTime({
             categoryId,
@@ -58,17 +62,29 @@ export default function App() {
         });
         const resultRecord = await getRecord({ categoryId });
 
-        loading.setState({
-            isLoading: false,
-        });
-
         timer.setState({
             ...timer.state,
-            selectedCategory: { _id: categoryId, name: categoryName },
+            category: { id: categoryId, name: categoryName },
             recordList: resultRecord.data,
             todayTime: resultToday.data,
             weeklyTime: resultWeekly.data,
         });
+
+        // loading.setState({
+        //     isLoading: true,
+        // });
+
+        const resultTodo = await getTodo({ categoryId });
+
+        todo.setState({
+            ...todo.state,
+            todo : resultTodo.data,
+            category: { id: categoryId, name: categoryName },
+        })
+
+        // loading.setState({
+        //     isLoading: false,
+        // });
     };
 
     const attachEvent = () => {
@@ -92,13 +108,24 @@ export default function App() {
                 }
             }
         });
+
+        const navList = document.querySelector('#navigation').querySelectorAll('.item');
+        console.log(navList);
+        navList.forEach(ele => {
+            ele.addEventListener('click', e => {
+                navList.forEach(ele2 => {
+                    ele2.classList.remove('selected');
+                })
+                ele.classList.add('selected');
+            })
+        })
     };
 
     // this.setState = () => {};
     // this.render = () => {};
 
-    this.attachNode = () => {
-        const { loading, category, timer } = this.component;
+    const attachNode = () => {
+        const { category, timer } = this.component;
 
         const $root = document.querySelector('#app');
         const $header = document.createElement('div');
@@ -109,16 +136,24 @@ export default function App() {
         $main.id = 'main';
         $content.id = 'content';
 
+        const $navigation = document.createElement('div');
+        $navigation.id = 'navigation'
+        $navigation.innerHTML = `
+            <div class='item selected'><a href='/'>TODO</a></div>
+            <div>|</div>
+            <div class='item'><a href='/timer'>TIMER</a></div>
+        `;
+
         $root.appendChild($header);
         $root.appendChild($main);
+        $main.appendChild($navigation);
         $main.appendChild($content);
 
-        loading.attachNode($root);
         category.attachNode({$header});
-        timer.attachNode({$header, $content});
+        timer.attachNode({$header});
     };
 
     initialize();
+    attachNode();
     attachEvent();
-    this.attachNode();
 }

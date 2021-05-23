@@ -16,7 +16,8 @@ export default function Loading({initialState}){
         this.$element.style.display = this.state.isLoading ? 'flex' : 'none';
     }
 
-    this.attachNode = ($target) => {
-        $target.appendChild(this.$element)
-    }
+    const attachNode = (() => {
+        const $root = document.querySelector('#app');
+        $root.appendChild(this.$element)
+    })();
 }

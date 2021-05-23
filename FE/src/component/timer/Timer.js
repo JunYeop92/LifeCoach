@@ -11,8 +11,8 @@ export default function Timer({ loading }) {
         todayTime: 0, // 분단위, max:24*60
         weeklyTime : 0,
         recordList: [],
-        selectedCategory: {
-            _id: '',
+        category: {
+            id: '',
             name: '',
         },
     };
@@ -37,7 +37,7 @@ export default function Timer({ loading }) {
                     isLoading: true,
                 });
                 await insertTime({
-                    category: this.state.selectedCategory._id,
+                    category: this.state.category.id,
                     ymd,
                     startDate,
                     endDate,
@@ -45,7 +45,7 @@ export default function Timer({ loading }) {
                 });
 
                 const resultToday = await getTodayTime({
-                    categoryId: this.state.selectedCategory._id,
+                    categoryId: this.state.category.id,
                     ymd,
                 });
 
@@ -54,13 +54,13 @@ export default function Timer({ loading }) {
                 const endYmd = getYmd(endWeekDate);
 
                 const resultWeekly = await getWeeklyTime({
-                    categoryId : this.state.selectedCategory._id,
+                    categoryId : this.state.category.id,
                     startYmd,
                     endYmd,
                 });
 
                 const resultRecord = await getRecord({
-                    categoryId: this.state.selectedCategory._id,
+                    categoryId: this.state.category.id,
                 });
                 loading.setState({
                     isLoading : false
@@ -74,7 +74,6 @@ export default function Timer({ loading }) {
                 });
             },
         });
-        
 
         //TODAY
         const cumulativeTime = new CumulativeTime({
@@ -138,23 +137,32 @@ export default function Timer({ loading }) {
         });
         
         this.$element.$timerTitle.innerHTML 
-            = `<span>${this.state.selectedCategory.name}</span>`;
+            = `<span>${this.state.category.name}</span>`;
     };
     
     // this.render = () => {};
 
     this.attachNode = ($target) => {
+        //$header와 $content가 동시에 객체가 있는 경우는 없다.
         const { $header, $content } = $target;
-        const { menu, measureTime, cumulativeTime, weeklyTime, focusRecord } = this.component;
-        const {$timerWrap, $timerTitle} = this.$element;
-        
-        menu.attachNode($content);
-        $content.appendChild($timerWrap);
-        $content.appendChild($timerTitle);
-        focusRecord.attachNode($header);
-        measureTime.attachNode($timerWrap); //menu 기본 선택(default)
+
+        if($header){
+            this.component.focusRecord.attachNode($header);
+            return;
+        }
+
+        if($content){
+            const { menu, measureTime } = this.component;
+            const {$timerWrap, $timerTitle} = this.$element;
+
+            //UI 구현순서대로
+            menu.attachNode($content);
+            $content.appendChild($timerWrap);
+            $content.appendChild($timerTitle);
+            measureTime.attachNode($timerWrap); //menu 기본 선택(default)
+            return;
+        }
     }
 
     initialize();
-    
 }

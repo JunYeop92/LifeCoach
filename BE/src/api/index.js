@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 import Time from '../model/time.js';
 import Category from '../model/category.js';
+import Todo from '../model/todo.js';
 
 const api = new Router();
 
@@ -64,7 +65,7 @@ api.get('/weeklyTime', async (ctx) => {
 });
 
 api.get('/record', async (ctx) => {
-    const { categoryId, ymd } = ctx.query;
+    const { categoryId } = ctx.query;
     try {
         const resultList = await Time.find()
             .where('category').equals(categoryId)
@@ -105,6 +106,58 @@ api.delete('/category', async (ctx) => {
     try {
         await Category.findByIdAndDelete(id).exec();
         await Time.deleteMany({category:id});
+        ctx.status = 204;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+
+api.post('/todo', async (ctx) => {
+    const { content, categoryId } = ctx.request.body;
+    const todo = new Todo({
+        content,
+        categoryId
+    });
+
+    try {
+        await todo.save();
+        ctx.body = todo;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+api.get('/todo', async (ctx) => {
+    const { categoryId } = ctx.query;
+    try {
+        const list = await Todo.find()
+            .where('categoryId').equals(categoryId)
+            .sort('insertDate')    
+            .select('_id content isCompleted categoryId')
+            .exec();
+        ctx.body = list;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+api.delete('/todo', async (ctx) => {
+    const { id } = ctx.request.body;
+    try {
+        await Todo.findByIdAndDelete(id).exec();
+        // await Time.deleteMany({todoId:id});
+        ctx.status = 204;
+    } catch (e) {
+        ctx.throw(500, e);
+    }
+});
+
+api.patch('/todo', async (ctx) => {
+    const { id } = ctx.request.body;
+    try {
+        const { isCompleted } = await Todo.findById(id, 'isCompleted').exec();
+        await Todo.findByIdAndUpdate(id, { isCompleted : !isCompleted }).exec();
         ctx.status = 204;
     } catch (e) {
         ctx.throw(500, e);

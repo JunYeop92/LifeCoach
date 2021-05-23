@@ -16,30 +16,51 @@ export default function TodoList({ initalState, onCheck, onDelete}) {
         const htmlString = this.state.todo.map((item) =>
             `
             <li id="${item._id}">  
-                ${item.isCompleted ? `<input type='checkbox' checked> <s>${item.content}</s>` 
-                                : `<input type='checkbox'/> ${item.content}`} 
-                <button id="${item._id}">삭제</button> 
+                ${item.isCompleted ? `<span class='toggle'><i class="fas fa-check-circle"></i></span> <s>${item.content}</s>` 
+                                : `<span class='toggle'><i class="far fa-circle"></i></span> ${item.content}`} 
+                <span class='del'><i class="far fa-trash-alt"></i></span> 
             </li>`
         ).join('')
         this.$element.innerHTML = `<ul>${htmlString}</ul>`
     }
 
+   
+
     const attachEvent = (() => {
-        this.$element.addEventListener("click", (event) => {
-            const eTaget = event.target;
-            if (eTaget.tagName === "BUTTON") {
-                onDelete(eTaget.id);
-            } else if (eTaget.tagName === "LI") {
-                onClick(eTaget.id);
-            } else if (eTaget.tagName === "S") {
-                onClick(eTaget.parentNode.id);
+        const eventMap = {
+            svg : (e) => {
+                const $ele = e.target.parentNode
+                eventMap2[$ele.className]($ele);
+            },
+            path : (e) => {
+                const $ele = e.target.parentNode.parentNode
+                eventMap2[$ele.className]($ele);
             }
+        }
+
+        const eventMap2 = {
+            toggle : ($ele) => {
+                onCheck($ele.parentNode.id);
+            },
+            del : ($ele) => {
+                onDelete($ele.parentNode.id);
+            }
+        }
+
+        const otherWise = () => {
+            console.log('otherwise');
+        };
+
+        this.$element.addEventListener("click", (e) => {
+            (eventMap[e.target.tagName] || otherWise)(e);
         })
     })();
     
     this.attachNode = ($target) => {
         $target.appendChild(this.$element)
     }
+    // this.render();
+   
 }
 
 // const validDataList = (dataList) => {
