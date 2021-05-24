@@ -139,9 +139,9 @@ export default function App() {
         const $navigation = document.createElement('div');
         $navigation.id = 'navigation'
         $navigation.innerHTML = `
-            <div class='item selected'><a href='/'>TODO</a></div>
-            <div>|</div>
-            <div class='item'><a href='/timer'>TIMER</a></div>
+            <div><a href='/' class='item selected'>TODO</a></div>
+            <div id='bar'><span>|</span></div>
+            <div><a href='/timer' class='item'>TIMER</a></div>
         `;
 
         $root.appendChild($header);
