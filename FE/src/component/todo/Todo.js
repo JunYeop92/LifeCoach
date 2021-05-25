@@ -1,6 +1,7 @@
 import TodoList from './TodoList.js';
 import TodoInput from './TodoInput.js';
 import { addTodo, getTodo, delTodo, checkTodo } from '../../api/todo.js';
+import TodoDate from './TodoDate.js';
 
 export default function Todo({ loading }) {
     this.state = {
@@ -15,9 +16,8 @@ export default function Todo({ loading }) {
 
     const initialize = () => {
         this.$element.id = 'todo';
-        this.$element.innerHTML = `
-            <div id='todo-title'> 2021년 5월 20일 목요일 </div>
-        `
+        
+        const todoDate = new TodoDate();
 
         const todoList = new TodoList({
             initalState: {
@@ -47,6 +47,7 @@ export default function Todo({ loading }) {
         this.component = {
             todoList,
             todoInput,
+            todoDate,
         };
     };
 
@@ -64,10 +65,10 @@ export default function Todo({ loading }) {
 
     this.attachNode = ($target) => {
         const { $content } = $target;
-        const { todoList, todoInput } = this.component;
+        const { todoList, todoInput, todoDate } = this.component;
         
         $content.appendChild(this.$element);
-
+        todoDate.attachNode(this.$element);
         todoList.attachNode(this.$element);
         todoInput.attachNode(this.$element);
     }
