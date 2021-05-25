@@ -1,0 +1,81 @@
+#todo {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+#todo-title {
+    font-size: 1.6rem;
+    padding: 2%;
+}
+
+#todo-list {
+    margin-top: 1.5%;
+    font-size: 1.4rem;
+}
+
+#todo-list li {
+    padding: 2%;
+}
+
+#todo-list li > span {
+    margin-right: 1%;
+}
+
+#todo-list li s {
+    opacity: 0.5;
+    font-weight: normal;
+}
+
+#todo-list .del {
+    display: none;
+    font-size: 1rem;
+    vertical-align: middle;
+    margin-left: 1.5%;
+}
+
+#todo-list li:hover .del {
+    display: inline;
+}
+
+#todo-add {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-top: 3px solid;
+    height: 20%;
+    font-size: 1.5rem;
+}
+
+#todo-add input {
+    width: 85%;
+    height: 30%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid white;
+    color: white;
+    opacity: 0.5;
+
+    font-family: NanumSquareRound;
+    font-weight: bold;
+}
+
+#todo-add input::placeholder {
+    color: rgb(206, 206, 206);
+}
+
+#todo-add input:focus {
+    opacity: 1;
+}
+
+#todo-add #btn {
+    margin-left: 3%;
+    opacity: 0.5;
+}
+
+#todo-add #btn:hover {
+    opacity: 1;
+}

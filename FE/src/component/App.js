@@ -110,7 +110,6 @@ export default function App() {
         });
 
         const navList = document.querySelector('#navigation').querySelectorAll('.item');
-        console.log(navList);
         navList.forEach(ele => {
             ele.addEventListener('click', e => {
                 navList.forEach(ele2 => {

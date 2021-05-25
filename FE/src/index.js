@@ -1,24 +1,14 @@
 import App from './component/App.js';
 
-import './Normalize.css';
-import './style.css';
+import './css/Normalize.css';
+import './css/style.css';
+import './css/timer.css';
+import './css/todo.css';
+
 import '@fortawesome/fontawesome-free/js/all.js';
 
-
-
-// 라우터
+// 라우팅
 (function () {
-    // const root = document.querySelector('#app');
-
-    // const timer = new Timer();
-    // const category = new Category();
-    // const app = new App();
-    // const { timer, todo } = app.component
-    /* 
-        / -> timer와 catergory 컴포넌트 
-        /todo -> todo 컴포넌트만
-    */
-
     const app = new App();
     const { todo, timer } = app.component;
     const routes = {

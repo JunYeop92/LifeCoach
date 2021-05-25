@@ -1,12 +1,12 @@
 @font-face {
     font-family: NanumSquareRound;
-    src: url('asset/font/NanumSquareRoundR.ttf') format('truetype');
+    src: url('../asset/font/NanumSquareRoundR.ttf') format('truetype');
     font-weight: normal;
 }
 
 @font-face {
     font-family: NanumSquareRound;
-    src: url('asset/font/NanumSquareRoundB.ttf') format('truetype');
+    src: url('../asset/font/NanumSquareRoundB.ttf') format('truetype');
     font-weight: bold;
 }
 
@@ -29,7 +29,7 @@ a:hover, a:active {
     display: flex;
     flex-direction: column;
     height: 100%; /*비율은 부모 요소에 비례*/
-    background-image: url('asset/image/structure.png');
+    background-image: url('../asset/image/structure.png');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -136,182 +136,6 @@ a:hover, a:active {
     border-radius: 7px;
 }
 
-#todo {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-}
-
-#todo-title {
-    font-size: 1.6rem;
-    padding: 2%;
-}
-
-#todo-list {
-    margin-top: 1.5%;
-    font-size: 1.4rem;
-}
-
-#todo-list li{
-    padding: 2%;
-}
-
-#todo-list li > span{
-    margin-right: 1%;
-}
-
-#todo-list li s{
-    opacity: 0.5;
-    font-weight: normal;
-}
-
-#todo-list .del{
-    display: none;
-    font-size : 1rem;
-    vertical-align: middle;
-    margin-left: 1.5%;
-}
-
-#todo-list li:hover .del{
-    display: inline;
-}
-
-#todo-add {
-    margin-top: auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    border-top : 3px solid;
-    height: 20%;
-    font-size: 1.5rem;
-    
-}
-
-#todo-add input{
-    width: 85%;
-    height: 30%;
-    background: transparent;
-    border: none;
-    border-bottom: 1.5px solid white;
-    color:white;
-    opacity: 0.5;
-
-    font-family: NanumSquareRound;
-    font-weight: bold;
-}
-
-#todo-add input::placeholder {
-    color:rgb(206, 206, 206);
-  }
-
-#todo-add input:focus{
-    opacity: 1;
-}
-
-#todo-add #btn{
-    margin-left: 3%;
-    opacity: 0.5;
-}
-
-#todo-add #btn:hover{
-    opacity: 1;
-}
-
-#timer-menu {
-    display: flex;
-    width: 65%;
-    justify-content: space-between;
-}
-
-#timer-menu .item {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    border-top: 2px solid;
-    padding-top: 2%;
-    opacity: 0.7;
-}
-
-#timer-menu .item:hover {
-    opacity: 1;
-}
-
-#timer-menu .item.selected {
-    opacity: 1;
-}
-
-#timer-title {
-    width: 50%;
-    margin-bottom: 1%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8vmin;
-}
-
-#timer-title span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-#timer-wrap {
-    margin-bottom: 1%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-#timer-wrap:hover #btn {
-    display: block;
-}
-
-#timer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28vmin;
-}
-
-#timer-wrap #btn {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    right: 10%;
-    opacity: 0.7;
-    top: 33%;
-}
-
-#timer-wrap #today {
-    color: #fa9595;
-}
-
-#timer-wrap #weekly {
-    color: #6AAFE6;
-}
-
-#timer-wrap #btn span {
-    font-size: 8vmin;
-}
-
-#timer-wrap #btn:hover {
-    color: black !important;
-    opacity: 1;
-}
-
-/* #today {
-    width: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    font-size: 10vmin;
-} */
-
 /* 메뉴 드롭다운 */
 ul {
     padding: 0;
@@ -352,6 +176,7 @@ input:focus{
     border-bottom: 2px solid rgba(255, 255, 255, 0.5);
     opacity: 1;
 }
+
 /* 스크롤바 전체 */
 .dropdown-list::-webkit-scrollbar {
     width: 18px;
@@ -364,9 +189,6 @@ input:focus{
     border: 4px solid transparent;
     border-radius: 50px;
 }
-
-/*스크롤 막대 외부 */
-/* .dropdown-list::-webkit-scrollbar-track {} */
 
 .dropdown-list::before {
     content: '';
