@@ -18,6 +18,14 @@ export default function TodoInput({ onSubmit }) {
             $inputBox.value = "";
             $inputBox.focus();
         })
+
+        $inputBox.addEventListener("keyup", (e) => {
+            if(e.code === 'Enter'){
+                onSubmit($inputBox.value);
+                $inputBox.value = "";
+                $inputBox.focus();
+            }
+        })
     })();
 
     this.attachNode = ($target) => {
