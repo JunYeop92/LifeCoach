@@ -8,6 +8,7 @@ import api from './api/index.js';
 
 dotenv.config();
 const { PORT, MONGO_URI } = process.env;
+//MONGO_URI=mongodb://localhost/LifeCoach(로컬에서 실행할 경우)
 
 //mongoose.Promise = global.Promise;
 mongoose

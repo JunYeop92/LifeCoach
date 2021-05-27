@@ -49,7 +49,9 @@ export default function App() {
         const startYmd = getYmd(startWeekDate);
         const endYmd = getYmd(endWeekDate);
 
-        
+        // loading.setState({
+        //     isLoading: true,
+        // });
 
         const resultToday = await getTodayTime({
             categoryId,
@@ -70,9 +72,7 @@ export default function App() {
             weeklyTime: resultWeekly.data,
         });
 
-        // loading.setState({
-        //     isLoading: true,
-        // });
+        
 
         const resultTodo = await getTodo({ categoryId });
 
