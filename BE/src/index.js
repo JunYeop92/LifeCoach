@@ -9,11 +9,11 @@ import api from './api/index.js';
 dotenv.config();
 const { PORT, MONGO_URI } = process.env;
 //MONGO_URI=mongodb://localhost/LifeCoach(로컬에서 실행할 경우)
-//MONGO_URI=mongodb://admin:admin@13.125.224.237:27017/LifeCoach(서버용)
+//MONGO_URI=mongodb://admin:admin@13.125.224.237:27017/LifeCoach?authSource=admin(서버용)
+//admin DB에서 만든 계정이라서 뒤에 authSource를 붙여야 함
 
-//mongoose.Promise = global.Promise;
 mongoose
-    .connect(process.env.MONGO_URI, {
+    .connect(MONGO_URI, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
