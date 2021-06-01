@@ -18,6 +18,13 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
     this.setState = (nextState) => {
         this.state = nextState;
         this.render();
+        
+        //초기 선택(첫번째만)
+        this.$element.querySelector('.dropdown-list #list .item').classList.add('selected');
+        onSelect({
+            _id: this.state.list[0]._id,
+            name: this.state.list[0].content,
+        });
     };
 
     this.render = () => {
@@ -25,13 +32,13 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
             .map(
                 (item) =>
                     `<li id='${item._id}'>
-                        <span>${item.content}</span>
+                        <span class='item'>${item.content}</span>
                         <button id='${item._id}'>삭제</button>
                     </li>`
             )
             .join('');
         this.$element.querySelector('.dropdown-list #list').innerHTML = 
-            `<li id='title'>카테고리</li> ${htmlString}`;    
+            `<li id='title'>카테고리</li> ${htmlString}`;   
     };
 
     const attachEvent = (() => {
@@ -40,11 +47,20 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
             $dropbtn.classList.toggle('click');
         });
 
+
+        
         const eventMap = {
             BUTTON: (e) => {
                 onDelete(e.target.id);
             },
             SPAN: (e) => {
+                //바로 밑 코드는 NodeList를 반환(element 객체가 아님 -> '$'를 안붙임)
+                const resultList = this.$element.querySelectorAll('.item');
+                resultList.forEach(ele => {
+                    ele.classList.remove('selected');
+                })
+                e.target.classList.add('selected');
+                
                 onSelect({
                     _id: e.target.parentNode.id,
                     name: e.target.textContent,

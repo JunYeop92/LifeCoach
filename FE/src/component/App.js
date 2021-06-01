@@ -35,14 +35,11 @@ export default function App() {
         };
     };
 
-    const selCategory = async ({ categoryList, _id, name }) => {
+    const selCategory = async ({ _id, name }) => {
         const { timer, todo, loading } = this.component;
 
-        // console.log('오류');
-        // console.log(_id);
-        // console.log(categoryList);
-        const categoryId = _id || categoryList[0]._id;
-        const categoryName = name || categoryList[0].content;
+        const categoryId = _id;
+        const categoryName = name;
 
         const ymd = getYmd(new Date());
         const { startWeekDate, endWeekDate } = getWeek();
@@ -71,8 +68,6 @@ export default function App() {
             todayTime: resultToday.data,
             weeklyTime: resultWeekly.data,
         });
-
-        
 
         const resultTodo = await getTodo({ categoryId });
 

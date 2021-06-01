@@ -81,6 +81,12 @@ a:hover, a:active {
     padding-right: 15%;
 }
 
+#category .selected::after {
+    font-size: 1.3rem;
+    content:'(선택)';
+}
+
+
 #main {
     height: 90%;
     display: flex;

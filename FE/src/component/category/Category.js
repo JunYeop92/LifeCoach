@@ -56,7 +56,7 @@ export default function Category({ selCategory, loading }) {
         this.component.listCategory.setState({
             list: this.state.list,
         });
-        selCategory({ categoryList: this.state.list });
+        //selCategory({ categoryList: this.state.list });
     };
     // this.render = () => {};
 
