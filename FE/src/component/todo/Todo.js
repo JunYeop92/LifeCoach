@@ -3,7 +3,7 @@ import TodoInput from './TodoInput.js';
 import { addTodo, getTodo, delTodo, checkTodo } from '../../api/todo.js';
 import TodoDate from './TodoDate.js';
 
-export default function Todo({ loading }) {
+export default function Todo() {
     this.state = {
         todo: [],
         category: {
@@ -74,16 +74,10 @@ export default function Todo({ loading }) {
     }
 
     const getSetCommonState = async () => {
-        loading.setState({
-            isLoading: true,
-        });
         const result = await getTodo({ categoryId : this.state.category.id });
         this.setState({
             ...this.state,
             todo: result.data,
-        });
-        loading.setState({
-            isLoading: false,
         });
     }
 

@@ -1,5 +1,6 @@
-export default function Loading({initialState}){
-    this.state = initialState;
+//익명 생성자 함수
+const loading = new function(){
+    this.state = false;
     this.$element = document.createElement('div');
 
     const initialize = (() => {
@@ -13,11 +14,13 @@ export default function Loading({initialState}){
     }
 
     this.render = () => {
-        this.$element.style.display = this.state.isLoading ? 'flex' : 'none';
+        this.$element.style.display = this.state ? 'flex' : 'none';
     }
 
     const attachNode = (() => {
         const $root = document.querySelector('#app');
         $root.appendChild(this.$element)
     })();
-}
+};
+
+export default loading;

@@ -1,12 +1,12 @@
-import axios from 'axios';
+import client from './client.js';
 
 export const addTodo = ({ content, categoryId }) => 
-    axios.post('/api/todo', { content, categoryId });
+    client.post('/api/todo', { content, categoryId });
 
-export const getTodo = ({ categoryId }) => axios.get('/api/todo', { params: { categoryId } });
+export const getTodo = ({ categoryId }) => client.get('/api/todo', { params: { categoryId } });
 
 export const delTodo = ({ id }) => 
-    axios.delete('/api/todo', { data: { id } });
+    client.delete('/api/todo', { data: { id } });
 
 export const checkTodo = ({ id }) => 
-    axios.patch('/api/todo', { id });
+    client.patch('/api/todo', { id });

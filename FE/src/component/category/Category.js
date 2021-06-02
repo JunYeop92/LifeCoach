@@ -2,7 +2,7 @@ import AddCategory from './AddCategory.js';
 import ListCategory from './ListCategory.js';
 import { addContent, listContents, delContent } from '../../api/category.js';
 
-export default function Category({ selCategory, loading }) {
+export default function Category({ selCategory }) {
     this.state = {
         list: [],
     };
@@ -38,16 +38,10 @@ export default function Category({ selCategory, loading }) {
     };
 
     const getSetCommonState = async () => {
-        loading.setState({
-            isLoading: true,
-        });
         const result = await listContents();
         this.setState({
             ...this.state,
             list: result.data,
-        });
-        loading.setState({
-            isLoading: false,
         });
     }
 
@@ -56,7 +50,6 @@ export default function Category({ selCategory, loading }) {
         this.component.listCategory.setState({
             list: this.state.list,
         });
-        //selCategory({ categoryList: this.state.list });
     };
     // this.render = () => {};
 

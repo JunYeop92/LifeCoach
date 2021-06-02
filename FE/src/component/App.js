@@ -3,7 +3,6 @@ import Category from './category/Category.js';
 import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
 import { getTodo } from '../api/todo.js';
 import { getYmd, getWeek } from '../util.js';
-import Loading from './Loading.js';
 import Todo from './todo/Todo.js';
 
 export default function App() {
@@ -11,32 +10,21 @@ export default function App() {
     this.component;
 
     const initialize = () => {
-        const loading = new Loading({
-            initialState: {
-                isLoading: false,
-            },
-        });
         const category = new Category({
             selCategory,
-            loading,
         });
-        const timer = new Timer({
-            loading,
-        });
-        const todo = new Todo({
-            loading
-        })
+        const timer = new Timer();
+        const todo = new Todo()
 
         this.component = {
             category,
             timer,
             todo,
-            loading,
         };
     };
 
     const selCategory = async ({ _id, name }) => {
-        const { timer, todo, loading } = this.component;
+        const { timer, todo } = this.component;
 
         const categoryId = _id;
         const categoryName = name;
@@ -45,11 +33,7 @@ export default function App() {
         const { startWeekDate, endWeekDate } = getWeek();
         const startYmd = getYmd(startWeekDate);
         const endYmd = getYmd(endWeekDate);
-
-        // loading.setState({
-        //     isLoading: true,
-        // });
-
+   
         const resultToday = await getTodayTime({
             categoryId,
             ymd,
@@ -76,10 +60,6 @@ export default function App() {
             todo : resultTodo.data,
             category: { id: categoryId, name: categoryName },
         })
-
-        // loading.setState({
-        //     isLoading: false,
-        // });
     };
 
     const attachEvent = () => {

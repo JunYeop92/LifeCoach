@@ -1,9 +1,9 @@
-import axios from 'axios';
+import client from './client.js';
 
-export const addContent = ({ content }) => axios.post('/api/category', { content });
+export const addContent = ({ content }) => client.post('/api/category', { content });
 
-export const listContents = () => axios.get('/api/category');
+export const listContents = () => client.get('/api/category');
 
 export const delContent = ({ id }) => {
-    axios.delete('/api/category', { data: { id } });
+    client.delete('/api/category', { data: { id } });
 };
