@@ -5,11 +5,6 @@
     height: 100%;
 }
 
-#todo-date {
-    font-size: 1.6rem;
-    padding: 2%;
-}
-
 #todo-list {
     margin-top: 1.5%;
     font-size: 1.4rem;
@@ -78,4 +73,42 @@
 
 #todo-add #btn:hover {
     opacity: 1;
+}
+
+#todo-date {
+    font-size: 1.6rem;
+    padding: 2%;
+    display: flex;
+    justify-content: space-between;
+}
+
+#todo-date:hover .btn-cal{
+    visibility: visible;
+}
+
+.btn-cal {
+    position: relative;
+    width: 5%;
+    margin-top: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    visibility: hidden;
+}
+
+.btn-cal:after {
+    color: white;
+    content: '<';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    line-height: 25px;
+    font-weight: bold;
+    font-size: 1.8rem;
+}
+.btn-cal.next:after {
+    content: '>';
 }

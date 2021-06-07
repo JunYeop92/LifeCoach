@@ -53,13 +53,13 @@ export default function App() {
             weeklyTime: resultWeekly.data,
         });
 
-        const resultTodo = await getTodo({ categoryId });
-
         todo.setState({
             ...todo.state,
-            todo : resultTodo.data,
             category: { id: categoryId, name: categoryName },
         })
+
+        await todo.getSetCommonState();
+
     };
 
     const attachEvent = () => {

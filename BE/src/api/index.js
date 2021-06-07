@@ -114,10 +114,11 @@ api.delete('/category', async (ctx) => {
 
 
 api.post('/todo', async (ctx) => {
-    const { content, categoryId } = ctx.request.body;
+    const { content, categoryId, ymd } = ctx.request.body;
     const todo = new Todo({
         content,
-        categoryId
+        categoryId,
+        ymd
     });
 
     try {
@@ -129,10 +130,11 @@ api.post('/todo', async (ctx) => {
 });
 
 api.get('/todo', async (ctx) => {
-    const { categoryId } = ctx.query;
+    const { categoryId, ymd } = ctx.query;
     try {
         const list = await Todo.find()
             .where('categoryId').equals(categoryId)
+            .where('ymd').equals(ymd)
             .sort('insertDate')    
             .select('_id content isCompleted categoryId')
             .exec();

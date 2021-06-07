@@ -1,9 +1,9 @@
 import client from './client.js';
 
-export const addTodo = ({ content, categoryId }) => 
-    client.post('/api/todo', { content, categoryId });
+export const addTodo = ({ content, categoryId, ymd}) => 
+    client.post('/api/todo', { content, categoryId, ymd });
 
-export const getTodo = ({ categoryId }) => client.get('/api/todo', { params: { categoryId } });
+export const getTodo = ({ categoryId, ymd }) => client.get('/api/todo', { params: { categoryId, ymd } });
 
 export const delTodo = ({ id }) => 
     client.delete('/api/todo', { data: { id } });

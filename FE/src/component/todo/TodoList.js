@@ -7,6 +7,9 @@ export default function TodoList({ initalState, onCheck, onDelete}) {
     })();
 
     this.setState = (nextState) => {
+        if(JSON.stringify(this.state) === JSON.stringify(nextState)){
+            return;
+        }
         this.state = nextState;
         this.render();
     }
