@@ -4,7 +4,7 @@ import { addTodo, getTodo, delTodo, checkTodo } from '../../api/todo.js';
 import TodoDate from './TodoDate.js';
 import { getYmd } from "../../util.js";
 
-export default function Todo() {
+export default function Todo({todoUpdate}) {
     this.state = {
         todo: [],
         category: {
@@ -97,6 +97,7 @@ export default function Todo() {
             ...this.state,
             todo: result.data,
         });
+        todoUpdate(result.data);
     }
 
     initialize();

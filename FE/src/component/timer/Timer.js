@@ -3,8 +3,10 @@ import CumulativeTime from './CumulativeTime.js';
 import WeeklyTime from './WeeklyTime.js'
 import FocusRecord from './FocusRecord.js';
 import Menu from './Menu.js';
+import SelectTodo from './SelectTodo.js';
 import { insertTime, getTodayTime, getWeeklyTime, getRecord } from '../../api/time.js';
 import { getYmd, getWeek } from "../../util.js";
+
 
 export default function Timer() {
     this.state = {
@@ -15,6 +17,11 @@ export default function Timer() {
             id: '',
             name: '',
         },
+        todo : [],
+        selTodo : {
+            id : '',
+            name : ''
+        }
     };
     this.component;
     this.$element;
@@ -34,7 +41,8 @@ export default function Timer() {
         const measureTime = new MeasureTime({
             onSubmit: async ({ ymd, startDate, endDate, totalTime }) => {
                 await insertTime({
-                    category: this.state.category.id,
+                    categoryId: this.state.category.id,
+                    todoId : this.state.selTodo.id,
                     ymd,
                     startDate,
                     endDate,
@@ -106,19 +114,34 @@ export default function Timer() {
             },
         });
 
+        const selectTodo = new SelectTodo({
+            initialState: {
+                todo : this.state.todo,
+            },
+            onSelect : ({id,name}) => {
+                this.setState({
+                    ...this.state,
+                    selTodo : {
+                        id,
+                        name
+                    }
+                })
+            }
+        })
+
         this.component = {
             menu,
             measureTime,
             cumulativeTime,
             weeklyTime,
             focusRecord,
+            selectTodo
         };
     };
 
     this.setState = (nextState) => {
         this.state = nextState;
-        const { cumulativeTime, focusRecord, weeklyTime } = this.component;
-
+        const { cumulativeTime, focusRecord, weeklyTime, selectTodo } = this.component;
         cumulativeTime.setState({
             time : this.state.todayTime,
         });
@@ -128,9 +151,9 @@ export default function Timer() {
         focusRecord.setState({
             recordList : this.state.recordList,
         });
-        
-        this.$element.$timerTitle.innerHTML 
-            = `<span>${this.state.category.name}</span>`;
+        selectTodo.setState({
+            todo : this.state.todo,
+        });
     };
     
     // this.render = () => {};
@@ -145,13 +168,14 @@ export default function Timer() {
         }
 
         if($content){
-            const { menu, measureTime } = this.component;
+            const { menu, measureTime, selectTodo } = this.component;
             const {$timerWrap, $timerTitle} = this.$element;
 
             //UI 구현순서대로
             menu.attachNode($content);
             $content.appendChild($timerWrap);
-            $content.appendChild($timerTitle);
+            // $content.appendChild($timerTitle);
+            selectTodo.attachNode($content);
             measureTime.attachNode($timerWrap); //menu 기본 선택(default)
             return;
         }

@@ -22,7 +22,8 @@ export default function TodoList({ initalState, onCheck, onDelete}) {
                 ${item.isCompleted ? `<span class='toggle'><i class="fas fa-check-circle"></i></span> <s>${item.content}</s>` 
                                 : `<span class='toggle'><i class="far fa-circle"></i></span> ${item.content}`} 
                 <span class='del'><i class="far fa-trash-alt"></i></span> 
-            </li>`
+            </li>
+            `
         ).join('')
         this.$element.innerHTML = `<ul>${htmlString}</ul>`
     }

@@ -38,3 +38,15 @@ export const getWeek = () => {
   
     return {startWeekDate, endWeekDate};
 }
+
+export const findNode = (nList, eTarget) => {  
+    let num = 0
+    if (nList.length === 0) return 0;
+    nList.forEach(ele => {
+        if(ele.nodeName !== '#text'){
+            if(eTarget === ele) num++;
+        }
+        num += findNode(ele.childNodes, eTarget);
+    })
+    return num;
+}

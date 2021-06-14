@@ -14,7 +14,9 @@ export default function App() {
             selCategory,
         });
         const timer = new Timer();
-        const todo = new Todo()
+        const todo = new Todo({
+            todoUpdate,
+        })
 
         this.component = {
             category,
@@ -22,6 +24,14 @@ export default function App() {
             todo,
         };
     };
+
+    const todoUpdate = (todo) => {
+        const { timer } = this.component;
+        timer.setState({
+            ...timer.state,
+            todo
+        });
+    }
 
     const selCategory = async ({ _id, name }) => {
         const { timer, todo } = this.component;
@@ -57,33 +67,11 @@ export default function App() {
             ...todo.state,
             category: { id: categoryId, name: categoryName },
         })
-
         await todo.getSetCommonState();
 
     };
 
     const attachEvent = () => {
-        document.querySelector('#app').addEventListener('click', (e) => {
-            const targetId =
-                e.target.tagName == 'path' ? e.target.parentNode.id : e.target.id;
-
-            //숫자체크
-            const myReg = /\d/g;
-            const result = myReg.test(targetId);
-
-            if (targetId && !result) {
-                const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
-                if (!$categoryBtn.querySelector(`#${targetId}`)) {
-                    $categoryBtn.classList.remove('click');
-                }
-
-                const $recordBtn = e.currentTarget.querySelector('#record .dropbtn');
-                if (!$recordBtn.querySelector(`#${targetId}`)) {
-                    $recordBtn.classList.remove('click');
-                }
-            }
-        });
-
         const navList = document.querySelector('#navigation').querySelectorAll('.item');
         navList.forEach(ele => {
             ele.addEventListener('click', e => {

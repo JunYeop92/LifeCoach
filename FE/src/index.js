@@ -9,6 +9,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
 
 // 라우팅
 (function () {
+    
     const app = new App();
     const { todo, timer } = app.component;
     const routes = {
@@ -17,6 +18,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
         '/timer': timer,
     };
     //content 부분만 변경
+    let isFirst = true;
     const $content = document.querySelector('#content');
     const render = (path) => {
         $content.innerHTML = '';
@@ -25,7 +27,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
             $content.innerHTML = `${path} Not Found`;
             return;
         }
-
+        
         attachComponent.attachNode({$content});
     };
 

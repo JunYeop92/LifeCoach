@@ -1,7 +1,7 @@
 import client from './client.js';
 
-export const insertTime = ({ category, ymd, startDate, endDate, totalTime }) =>
-    client.post('/api', { category, ymd, startDate, endDate, totalTime });
+export const insertTime = ({ categoryId, todoId, ymd, startDate, endDate, totalTime }) =>
+    client.post('/api', { categoryId, todoId, ymd, startDate, endDate, totalTime });
 
 export const getTodayTime = ({ categoryId, ymd }) =>
     client.get('/api/todayTime', { params: { categoryId, ymd } });

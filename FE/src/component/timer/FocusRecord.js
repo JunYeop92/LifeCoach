@@ -17,6 +17,9 @@ export default function FocusRecord({ initialState }) {
     })();
 
     this.setState = (nextState) => {
+        if(JSON.stringify(this.state) === JSON.stringify(nextState)){
+            return;
+        }
         this.state = nextState;
         this.render();
     };
@@ -24,13 +27,14 @@ export default function FocusRecord({ initialState }) {
     this.render = () => {
         let oldYmd = 0;
         const htmlString = this.state.recordList
-            .map(({ ymd, endDate, startDate, totalTime }) => {
+            .map(({ todoId, ymd, endDate, startDate, totalTime }) => {
                 let str = '';
                 if (ymd !== oldYmd) {
                     str = `<li class='ymd'>${ymd}</li>`;
                     oldYmd = ymd;
                 }
                 str += `<li class='date'>
+                            <span>${todoId.content}</span>
                             <span>${toHourMinFormat(startDate)} ~ ${toHourMinFormat(endDate)}</span>
                             <span>${totalTime}</span>
                         </li>`;

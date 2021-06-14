@@ -1,3 +1,5 @@
+import { findNode } from "../../util.js";
+
 export default function ListCategory({ initialState, onDelete, onSelect }) {
     this.state = initialState;
     this.$element = document.createElement('div');
@@ -42,12 +44,16 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
     };
 
     const attachEvent = (() => {
-        const $dropbtn = this.$element.querySelector('.dropbtn')
+        const $dropbtn = this.$element.querySelector('.dropbtn');
+        document.querySelector('#app').addEventListener('click', (e) => {
+            //외부 클릭 시 드롭박스 사라짐
+            let breakNum = findNode($dropbtn.childNodes, e.target);
+            if(e.target === $dropbtn) breakNum++;
+            if(breakNum === 0) $dropbtn.classList.remove('click');
+        });
         $dropbtn.addEventListener('click', (e) => {
             $dropbtn.classList.toggle('click');
         });
-
-
         
         const eventMap = {
             BUTTON: (e) => {
@@ -71,7 +77,7 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
             console.log('otherwise');
         };
 
-        this.$element.addEventListener('click', (e) => {
+        this.$element.querySelector('.dropdown-list').addEventListener('click', (e) => {
             (eventMap[e.target.tagName] || otherWise)(e);
         });
     })();
