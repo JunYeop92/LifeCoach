@@ -18,7 +18,6 @@ body {
 a {
     color: #fff; 
     text-decoration: none; 
-    cursor: default;
 }
 a:hover, a:active {
     text-decoration: none; 
@@ -33,6 +32,7 @@ a:hover, a:active {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    cursor:default;
 }
 
 #loading {
@@ -74,12 +74,18 @@ a:hover, a:active {
 }
 
 #category > div {
-    padding-left: 12%;
+    padding-left: 15px;
 }
 
 #record > div {
-    padding-right: 15%;
+    padding-right: 15px;
 }
+
+#category .selected::after {
+    font-size: 1.3rem;
+    content:'(선택)';
+}
+
 
 #main {
     height: 90%;
@@ -166,7 +172,9 @@ input:focus{
     background-color: rgba(0, 0, 0, 0.9);
     border-radius: 3px;
     z-index: 2;
+}
 
+.dropdown-list ul {
     max-height: 500px;
     overflow: auto;
 }
@@ -178,12 +186,12 @@ input:focus{
 }
 
 /* 스크롤바 전체 */
-.dropdown-list::-webkit-scrollbar {
+.dropdown-list ul::-webkit-scrollbar {
     width: 18px;
 }
 
 /*스크롤 막대 */
-.dropdown-list::-webkit-scrollbar-thumb {
+.dropdown-list ul::-webkit-scrollbar-thumb {
     background-color: white; 
     background-clip: padding-box;
     border: 4px solid transparent;
@@ -247,7 +255,7 @@ input:focus{
 
 #category .dropdown-list::before {
     top: -8px;
-    left: 13px;
+    left: 10px;
 }
 
 #category .dropbtn.click ~ .dropdown-list {
@@ -264,7 +272,7 @@ input:focus{
 
 #record .dropdown-list::before {
     top: -8px;
-    right: 17px;
+    right: 14px;
 }
 
 #record .dropbtn.click + .dropdown-list {

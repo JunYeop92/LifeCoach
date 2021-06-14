@@ -5,9 +5,11 @@ const { Schema } = mongoose;
 
 const TodoSchema = new Schema({
     content: String,
+    categoryId: Schema.Types.ObjectId,
+    ymd : String,
     isCompleted : { type: Boolean, default: false },
     insertDate: { type: Date, default: Date.now },
-    categoryId: Schema.Types.ObjectId,
+    
 });
 
 const Todo = mongoose.model('Todo', TodoSchema);

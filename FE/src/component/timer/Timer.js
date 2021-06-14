@@ -3,10 +3,12 @@ import CumulativeTime from './CumulativeTime.js';
 import WeeklyTime from './WeeklyTime.js'
 import FocusRecord from './FocusRecord.js';
 import Menu from './Menu.js';
+import SelectTodo from './SelectTodo.js';
 import { insertTime, getTodayTime, getWeeklyTime, getRecord } from '../../api/time.js';
 import { getYmd, getWeek } from "../../util.js";
 
-export default function Timer({ loading }) {
+
+export default function Timer() {
     this.state = {
         todayTime: 0, // 분단위, max:24*60
         weeklyTime : 0,
@@ -15,6 +17,11 @@ export default function Timer({ loading }) {
             id: '',
             name: '',
         },
+        todo : [],
+        selTodo : {
+            id : '',
+            name : ''
+        }
     };
     this.component;
     this.$element;
@@ -33,45 +40,15 @@ export default function Timer({ loading }) {
         //FOCUS
         const measureTime = new MeasureTime({
             onSubmit: async ({ ymd, startDate, endDate, totalTime }) => {
-                loading.setState({
-                    isLoading: true,
-                });
                 await insertTime({
-                    category: this.state.category.id,
+                    categoryId: this.state.category.id,
+                    todoId : this.state.selTodo.id,
                     ymd,
                     startDate,
                     endDate,
                     totalTime,
                 });
-
-                const resultToday = await getTodayTime({
-                    categoryId: this.state.category.id,
-                    ymd,
-                });
-
-                const {startWeekDate, endWeekDate} = getWeek();
-                const startYmd = getYmd(startWeekDate);
-                const endYmd = getYmd(endWeekDate);
-
-                const resultWeekly = await getWeeklyTime({
-                    categoryId : this.state.category.id,
-                    startYmd,
-                    endYmd,
-                });
-
-                const resultRecord = await getRecord({
-                    categoryId: this.state.category.id,
-                });
-                loading.setState({
-                    isLoading : false
-                })
-
-                this.setState({
-                    ...this.state,
-                    todayTime: resultToday.data,
-                    weeklyTime : resultWeekly.data,
-                    recordList: resultRecord.data,
-                });
+                await this.getSetCommonState();
             },
         });
 
@@ -113,19 +90,34 @@ export default function Timer({ loading }) {
             },
         });
 
+        const selectTodo = new SelectTodo({
+            initialState: {
+                todo : this.state.todo,
+            },
+            onSelect : ({id,name}) => {
+                this.setState({
+                    ...this.state,
+                    selTodo : {
+                        id,
+                        name
+                    }
+                })
+            }
+        })
+
         this.component = {
             menu,
             measureTime,
             cumulativeTime,
             weeklyTime,
             focusRecord,
+            selectTodo
         };
     };
 
     this.setState = (nextState) => {
         this.state = nextState;
-        const { cumulativeTime, focusRecord, weeklyTime } = this.component;
-
+        const { cumulativeTime, focusRecord, weeklyTime, selectTodo } = this.component;
         cumulativeTime.setState({
             time : this.state.todayTime,
         });
@@ -135,11 +127,37 @@ export default function Timer({ loading }) {
         focusRecord.setState({
             recordList : this.state.recordList,
         });
-        
-        this.$element.$timerTitle.innerHTML 
-            = `<span>${this.state.category.name}</span>`;
+        selectTodo.setState({
+            todo : this.state.todo,
+        });
     };
-    
+
+    this.getSetCommonState = async () => {
+        const categoryId = this.state.category.id;
+
+        const ymd = getYmd(new Date());
+        const { startWeekDate, endWeekDate } = getWeek();
+        const startYmd = getYmd(startWeekDate);
+        const endYmd = getYmd(endWeekDate);
+   
+        const resultToday = await getTodayTime({
+            categoryId,
+            ymd,
+        });
+        const resultWeekly = await getWeeklyTime({
+            categoryId,
+            startYmd,
+            endYmd,
+        });
+        const resultRecord = await getRecord({ categoryId });
+
+        this.setState({
+            ...this.state,
+            recordList: resultRecord.data,
+            todayTime: resultToday.data,
+            weeklyTime: resultWeekly.data,
+        });
+    }
     // this.render = () => {};
 
     this.attachNode = ($target) => {
@@ -152,13 +170,14 @@ export default function Timer({ loading }) {
         }
 
         if($content){
-            const { menu, measureTime } = this.component;
+            const { menu, measureTime, selectTodo } = this.component;
             const {$timerWrap, $timerTitle} = this.$element;
 
             //UI 구현순서대로
             menu.attachNode($content);
             $content.appendChild($timerWrap);
-            $content.appendChild($timerTitle);
+            // $content.appendChild($timerTitle);
+            selectTodo.attachNode($content);
             measureTime.attachNode($timerWrap); //menu 기본 선택(default)
             return;
         }

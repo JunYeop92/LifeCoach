@@ -1,9 +1,5 @@
 import Timer from './timer/Timer.js';
 import Category from './category/Category.js';
-import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
-import { getTodo } from '../api/todo.js';
-import { getYmd, getWeek } from '../util.js';
-import Loading from './Loading.js';
 import Todo from './todo/Todo.js';
 
 export default function App() {
@@ -11,104 +7,47 @@ export default function App() {
     this.component;
 
     const initialize = () => {
-        const loading = new Loading({
-            initialState: {
-                isLoading: false,
-            },
-        });
         const category = new Category({
             selCategory,
-            loading,
         });
-        const timer = new Timer({
-            loading,
-        });
+        const timer = new Timer();
         const todo = new Todo({
-            loading
+            todoUpdate,
         })
 
         this.component = {
             category,
             timer,
             todo,
-            loading,
         };
     };
 
-    const selCategory = async ({ categoryList, _id, name }) => {
-        const { timer, todo, loading } = this.component;
-
-        // console.log('오류');
-        // console.log(_id);
-        // console.log(categoryList);
-        const categoryId = _id || categoryList[0]._id;
-        const categoryName = name || categoryList[0].content;
-
-        const ymd = getYmd(new Date());
-        const { startWeekDate, endWeekDate } = getWeek();
-        const startYmd = getYmd(startWeekDate);
-        const endYmd = getYmd(endWeekDate);
-
-        // loading.setState({
-        //     isLoading: true,
-        // });
-
-        const resultToday = await getTodayTime({
-            categoryId,
-            ymd,
+    const todoUpdate = (todo) => {
+        const { timer } = this.component;
+        timer.setState({
+            ...timer.state,
+            todo
         });
-        const resultWeekly = await getWeeklyTime({
-            categoryId,
-            startYmd,
-            endYmd,
-        });
-        const resultRecord = await getRecord({ categoryId });
+    }
+
+    const selCategory = async ({ _id, name }) => {
+        const { timer, todo } = this.component;
 
         timer.setState({
             ...timer.state,
-            category: { id: categoryId, name: categoryName },
-            recordList: resultRecord.data,
-            todayTime: resultToday.data,
-            weeklyTime: resultWeekly.data,
+            category: { id: _id, name },
         });
-
-        
-
-        const resultTodo = await getTodo({ categoryId });
+        await timer.getSetCommonState();
 
         todo.setState({
             ...todo.state,
-            todo : resultTodo.data,
-            category: { id: categoryId, name: categoryName },
+            category: { id: _id, name },
         })
+        await todo.getSetCommonState();
 
-        // loading.setState({
-        //     isLoading: false,
-        // });
     };
 
     const attachEvent = () => {
-        document.querySelector('#app').addEventListener('click', (e) => {
-            const targetId =
-                e.target.tagName == 'path' ? e.target.parentNode.id : e.target.id;
-
-            //숫자체크
-            const myReg = /\d/g;
-            const result = myReg.test(targetId);
-
-            if (targetId && !result) {
-                const $categoryBtn = e.currentTarget.querySelector('#category .dropbtn');
-                if (!$categoryBtn.querySelector(`#${targetId}`)) {
-                    $categoryBtn.classList.remove('click');
-                }
-
-                const $recordBtn = e.currentTarget.querySelector('#record .dropbtn');
-                if (!$recordBtn.querySelector(`#${targetId}`)) {
-                    $recordBtn.classList.remove('click');
-                }
-            }
-        });
-
         const navList = document.querySelector('#navigation').querySelectorAll('.item');
         navList.forEach(ele => {
             ele.addEventListener('click', e => {

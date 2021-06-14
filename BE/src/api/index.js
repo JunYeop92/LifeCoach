@@ -8,9 +8,10 @@ const api = new Router();
 api.get('/', async (ctx) => {});
 
 api.post('/', async (ctx) => {
-    const { category, ymd, startDate, endDate, totalTime } = ctx.request.body;
+    const { categoryId, todoId, ymd, startDate, endDate, totalTime } = ctx.request.body;
     const time = new Time({
-        category,
+        categoryId,
+        todoId,
         ymd,
         startDate,
         endDate,
@@ -29,7 +30,7 @@ api.get('/todayTime', async (ctx) => {
     const { categoryId, ymd } = ctx.query;
     try {
         const resultList = await Time.find()
-            .where('category').equals(categoryId)
+            .where('categoryId').equals(categoryId)
             .where('ymd').equals(ymd)
             .sort('insertDate')
             .select('totalTime')
@@ -48,7 +49,7 @@ api.get('/weeklyTime', async (ctx) => {
     const { categoryId, startYmd, endYmd } = ctx.query;
     try {
         const resultList = await Time.find()
-            .where('category').equals(categoryId)
+            .where('categoryId').equals(categoryId)
             .where('ymd').gte(startYmd)
             .where('ymd').lte(endYmd)
             .sort('insertDate')
@@ -68,7 +69,8 @@ api.get('/record', async (ctx) => {
     const { categoryId } = ctx.query;
     try {
         const resultList = await Time.find()
-            .where('category').equals(categoryId)
+            .where('categoryId').equals(categoryId)
+            .populate('todoId', 'content')
             .sort('-ymd')
             .select('ymd startDate endDate totalTime')
             .exec();
@@ -114,10 +116,11 @@ api.delete('/category', async (ctx) => {
 
 
 api.post('/todo', async (ctx) => {
-    const { content, categoryId } = ctx.request.body;
+    const { content, categoryId, ymd } = ctx.request.body;
     const todo = new Todo({
         content,
-        categoryId
+        categoryId,
+        ymd
     });
 
     try {
@@ -129,10 +132,11 @@ api.post('/todo', async (ctx) => {
 });
 
 api.get('/todo', async (ctx) => {
-    const { categoryId } = ctx.query;
+    const { categoryId, ymd } = ctx.query;
     try {
         const list = await Todo.find()
             .where('categoryId').equals(categoryId)
+            .where('ymd').equals(ymd)
             .sort('insertDate')    
             .select('_id content isCompleted categoryId')
             .exec();

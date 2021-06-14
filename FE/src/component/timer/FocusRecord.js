@@ -11,12 +11,16 @@ export default function FocusRecord({ initialState }) {
             <div class="dropbtn">
                 <span><i class="fas fa-history" id="record-menu"></i></span>
             </div>
-            <ul class="dropdown-list">
-            </ul>
+            <div class="dropdown-list">
+                <ul id="list"></ul>
+            </div>
         </div>`;
     })();
 
     this.setState = (nextState) => {
+        if(JSON.stringify(this.state) === JSON.stringify(nextState)){
+            return;
+        }
         this.state = nextState;
         this.render();
     };
@@ -24,13 +28,14 @@ export default function FocusRecord({ initialState }) {
     this.render = () => {
         let oldYmd = 0;
         const htmlString = this.state.recordList
-            .map(({ ymd, endDate, startDate, totalTime }) => {
+            .map(({ todoId, ymd, endDate, startDate, totalTime }) => {
                 let str = '';
                 if (ymd !== oldYmd) {
                     str = `<li class='ymd'>${ymd}</li>`;
                     oldYmd = ymd;
                 }
                 str += `<li class='date'>
+                            <span>${todoId.content}</span>
                             <span>${toHourMinFormat(startDate)} ~ ${toHourMinFormat(endDate)}</span>
                             <span>${totalTime}</span>
                         </li>`;
@@ -38,7 +43,7 @@ export default function FocusRecord({ initialState }) {
             })
             .join('');
    
-        this.$element.querySelector('.dropdown-list').innerHTML = 
+        this.$element.querySelector('.dropdown-list #list').innerHTML = 
             `<li id='title'>집중이력</li>` + (htmlString || `<li>이력없음<li>` );
     };
 

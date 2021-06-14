@@ -1,12 +1,12 @@
-import axios from 'axios';
+import client from './client.js';
 
-export const insertTime = ({ category, ymd, startDate, endDate, totalTime }) =>
-    axios.post('/api', { category, ymd, startDate, endDate, totalTime });
+export const insertTime = ({ categoryId, todoId, ymd, startDate, endDate, totalTime }) =>
+    client.post('/api', { categoryId, todoId, ymd, startDate, endDate, totalTime });
 
 export const getTodayTime = ({ categoryId, ymd }) =>
-    axios.get('/api/todayTime', { params: { categoryId, ymd } });
+    client.get('/api/todayTime', { params: { categoryId, ymd } });
 
 export const getWeeklyTime = ({ categoryId, startYmd, endYmd }) =>
-    axios.get('/api/weeklyTime', { params: { categoryId, startYmd, endYmd } });
+    client.get('/api/weeklyTime', { params: { categoryId, startYmd, endYmd } });
 
-export const getRecord = ({categoryId}) => axios.get('/api/record' , { params: { categoryId } });
+export const getRecord = ({categoryId}) => client.get('/api/record' , { params: { categoryId } });
