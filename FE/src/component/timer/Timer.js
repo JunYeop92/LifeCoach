@@ -48,31 +48,7 @@ export default function Timer() {
                     endDate,
                     totalTime,
                 });
-
-                const resultToday = await getTodayTime({
-                    categoryId: this.state.category.id,
-                    ymd,
-                });
-
-                const {startWeekDate, endWeekDate} = getWeek();
-                const startYmd = getYmd(startWeekDate);
-                const endYmd = getYmd(endWeekDate);
-
-                const resultWeekly = await getWeeklyTime({
-                    categoryId : this.state.category.id,
-                    startYmd,
-                    endYmd,
-                });
-                const resultRecord = await getRecord({
-                    categoryId: this.state.category.id,
-                });
-
-                this.setState({
-                    ...this.state,
-                    todayTime: resultToday.data,
-                    weeklyTime : resultWeekly.data,
-                    recordList: resultRecord.data,
-                });
+                await this.getSetCommonState();
             },
         });
 
@@ -155,7 +131,33 @@ export default function Timer() {
             todo : this.state.todo,
         });
     };
-    
+
+    this.getSetCommonState = async () => {
+        const categoryId = this.state.category.id;
+
+        const ymd = getYmd(new Date());
+        const { startWeekDate, endWeekDate } = getWeek();
+        const startYmd = getYmd(startWeekDate);
+        const endYmd = getYmd(endWeekDate);
+   
+        const resultToday = await getTodayTime({
+            categoryId,
+            ymd,
+        });
+        const resultWeekly = await getWeeklyTime({
+            categoryId,
+            startYmd,
+            endYmd,
+        });
+        const resultRecord = await getRecord({ categoryId });
+
+        this.setState({
+            ...this.state,
+            recordList: resultRecord.data,
+            todayTime: resultToday.data,
+            weeklyTime: resultWeekly.data,
+        });
+    }
     // this.render = () => {};
 
     this.attachNode = ($target) => {

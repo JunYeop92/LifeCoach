@@ -1,8 +1,5 @@
 import Timer from './timer/Timer.js';
 import Category from './category/Category.js';
-import { getTodayTime, getWeeklyTime, getRecord } from '../api/time.js';
-import { getTodo } from '../api/todo.js';
-import { getYmd, getWeek } from '../util.js';
 import Todo from './todo/Todo.js';
 
 export default function App() {
@@ -36,36 +33,15 @@ export default function App() {
     const selCategory = async ({ _id, name }) => {
         const { timer, todo } = this.component;
 
-        const categoryId = _id;
-        const categoryName = name;
-
-        const ymd = getYmd(new Date());
-        const { startWeekDate, endWeekDate } = getWeek();
-        const startYmd = getYmd(startWeekDate);
-        const endYmd = getYmd(endWeekDate);
-   
-        const resultToday = await getTodayTime({
-            categoryId,
-            ymd,
-        });
-        const resultWeekly = await getWeeklyTime({
-            categoryId,
-            startYmd,
-            endYmd,
-        });
-        const resultRecord = await getRecord({ categoryId });
-
         timer.setState({
             ...timer.state,
-            category: { id: categoryId, name: categoryName },
-            recordList: resultRecord.data,
-            todayTime: resultToday.data,
-            weeklyTime: resultWeekly.data,
+            category: { id: _id, name },
         });
+        await timer.getSetCommonState();
 
         todo.setState({
             ...todo.state,
-            category: { id: categoryId, name: categoryName },
+            category: { id: _id, name },
         })
         await todo.getSetCommonState();
 
