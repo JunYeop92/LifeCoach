@@ -8,6 +8,21 @@
 #todo-list {
     margin-top: 1.5%;
     font-size: 1.4rem;
+    max-height: 65%;
+    overflow: auto;
+}
+
+/* 스크롤바 전체 */
+#todo-list::-webkit-scrollbar {
+    width: 18px;
+}
+
+/*스크롤 막대 */
+#todo-list::-webkit-scrollbar-thumb {
+    background-color: white; 
+    background-clip: padding-box;
+    border: 4px solid transparent;
+    border-radius: 50px;
 }
 
 #todo-list li {
