@@ -20,7 +20,7 @@ export default function TodoInput({ onSubmit }) {
         })
 
         $inputBox.addEventListener("keyup", (e) => {
-            if(e.code === 'Enter'){
+            if(e.key === 'Enter'){
                 onSubmit($inputBox.value);
                 $inputBox.value = "";
                 $inputBox.focus();
