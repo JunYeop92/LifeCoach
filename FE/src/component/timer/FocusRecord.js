@@ -11,8 +11,9 @@ export default function FocusRecord({ initialState }) {
             <div class="dropbtn">
                 <span><i class="fas fa-history" id="record-menu"></i></span>
             </div>
-            <ul class="dropdown-list">
-            </ul>
+            <div class="dropdown-list">
+                <ul id="list"></ul>
+            </div>
         </div>`;
     })();
 
@@ -42,7 +43,7 @@ export default function FocusRecord({ initialState }) {
             })
             .join('');
    
-        this.$element.querySelector('.dropdown-list').innerHTML = 
+        this.$element.querySelector('.dropdown-list #list').innerHTML = 
             `<li id='title'>집중이력</li>` + (htmlString || `<li>이력없음<li>` );
     };
 
