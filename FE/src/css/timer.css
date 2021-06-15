@@ -73,10 +73,18 @@
     opacity: 1;
 }
 
-#timer-sel {
+#timer-footer {
     width: 80%;
-    position: relative;
     font-size : 1.8rem;
+}
+
+#timer-category {
+    text-align: center;
+    border: 2px solid white;
+}
+
+#timer-sel {
+    position: relative;
 }
 
 #timer-sel #selected {

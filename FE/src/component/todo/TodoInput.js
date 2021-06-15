@@ -13,22 +13,22 @@ export default function TodoInput({ onSubmit }) {
 
     const attachEvent = (() => {
         const $inputBox = this.$element.getElementsByTagName('input')[0];
-        this.$element.querySelector('#btn').addEventListener("click", () => {
+        this.$element.querySelector('#btn').addEventListener('click', () => {
             onSubmit($inputBox.value);
-            $inputBox.value = "";
+            $inputBox.value = '';
             $inputBox.focus();
-        })
+        });
 
-        $inputBox.addEventListener("keyup", (e) => {
-            if(e.key === 'Enter'){
+        $inputBox.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
                 onSubmit($inputBox.value);
-                $inputBox.value = "";
+                $inputBox.value = '';
                 $inputBox.focus();
             }
-        })
+        });
     })();
 
     this.attachNode = ($target) => {
         $target.appendChild(this.$element);
-    }
+    };
 }
