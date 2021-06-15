@@ -8,11 +8,19 @@ export default function AddCategory({ onAdd }) {
     })();
 
     const attachEvent = (() => {
+        const $input = this.$element.getElementsByTagName('input')[0];
         this.$element.querySelector('#add-btn').addEventListener('click', () => {
-            const $input = this.$element.getElementsByTagName('input')[0];
             onAdd($input.value);
             $input.value = '';
             $input.focus();
+        });
+
+        $input.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                onAdd($input.value);
+                $input.value = '';
+                $input.focus();
+            }
         });
     })();
 

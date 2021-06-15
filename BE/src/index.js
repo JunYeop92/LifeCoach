@@ -10,6 +10,7 @@ dotenv.config();
 const { PORT, MONGO_URI } = process.env;
 //MONGO_URI=mongodb://localhost/LifeCoach(로컬에서 실행할 경우)
 //MONGO_URI=mongodb://admin:admin@3.36.70.235:27017/LifeCoach?authSource=admin(서버용)
+//MONGO_URI=mongodb://admin:admin@localhost/LifeCoach?authSource=admin(서버용)
 //admin DB에서 만든 계정이라서 뒤에 authSource를 붙여야 함
 
 mongoose

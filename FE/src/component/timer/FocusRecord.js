@@ -1,4 +1,5 @@
 import { toHourMinFormat } from "../../util.js";
+import { findNode } from "../../util.js";
 
 export default function FocusRecord({ initialState }) {
     this.state = initialState;
@@ -12,6 +13,7 @@ export default function FocusRecord({ initialState }) {
                 <span><i class="fas fa-history" id="record-menu"></i></span>
             </div>
             <div class="dropdown-list">
+                <div id='title'>카테고리</div>
                 <ul id="list"></ul>
             </div>
         </div>`;
@@ -43,14 +45,23 @@ export default function FocusRecord({ initialState }) {
             })
             .join('');
    
-        this.$element.querySelector('.dropdown-list #list').innerHTML = 
-            `<li id='title'>집중이력</li>` + (htmlString || `<li>이력없음<li>` );
+        this.$element.querySelector('.dropdown-list #list').innerHTML = (htmlString || `<li>이력없음<li>`);
     };
 
     const attachEvent = (() => {
-        const $dropbtn = this.$element.querySelector('.dropbtn')
-        $dropbtn.addEventListener('click', (e) => {
-            $dropbtn.classList.toggle('click');
+        const $dropBtn = this.$element.querySelector('.dropbtn');
+        const $dropList = this.$element.querySelector('.dropdown-list');
+        document.querySelector('#app').addEventListener('click', (e) => {
+            //외부 클릭 시 드롭박스 사라짐
+            let breakNum = findNode($dropBtn.childNodes, e.target);
+            breakNum += findNode($dropList.childNodes, e.target);
+            if(e.target === $dropBtn) breakNum++;
+            if(breakNum === 0) $dropBtn.classList.remove('click');
+        });
+
+        
+        $dropBtn.addEventListener('click', (e) => {
+            $dropBtn.classList.toggle('click');
         });
     })();
 

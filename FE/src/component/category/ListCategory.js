@@ -12,6 +12,7 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
                 <span><i class="fas fa-bars" id="category-menu"></i></span>
             </div>
             <div class="dropdown-list">
+                <div id='title'>카테고리</div>
                 <ul id="list"></ul>
             </div>
         </div>`;
@@ -39,20 +40,21 @@ export default function ListCategory({ initialState, onDelete, onSelect }) {
                     </li>`
             )
             .join('');
-        this.$element.querySelector('.dropdown-list #list').innerHTML = 
-            `<li id='title'>카테고리</li> ${htmlString}`;   
+        this.$element.querySelector('.dropdown-list #list').innerHTML = htmlString;
     };
 
     const attachEvent = (() => {
-        const $dropbtn = this.$element.querySelector('.dropbtn');
+        const $dropBtn = this.$element.querySelector('.dropbtn');
+        const $dropList = this.$element.querySelector('.dropdown-list');
         document.querySelector('#app').addEventListener('click', (e) => {
             //외부 클릭 시 드롭박스 사라짐
-            let breakNum = findNode($dropbtn.childNodes, e.target);
-            if(e.target === $dropbtn) breakNum++;
-            if(breakNum === 0) $dropbtn.classList.remove('click');
+            let breakNum = findNode($dropBtn.childNodes, e.target);
+            breakNum += findNode($dropList.childNodes, e.target);
+            if(e.target === $dropBtn) breakNum++;
+            if(breakNum === 0) $dropBtn.classList.remove('click');
         });
-        $dropbtn.addEventListener('click', (e) => {
-            $dropbtn.classList.toggle('click');
+        $dropBtn.addEventListener('click', (e) => {
+            $dropBtn.classList.toggle('click');
         });
         
         const eventMap = {
