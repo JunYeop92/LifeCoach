@@ -14,7 +14,9 @@ export default function FocusRecord({ initialState }) {
             </div>
             <div class="dropdown-list">
                 <div id='title'>카테고리</div>
-                <ul id="list"></ul>
+                <ul id="list">
+                    <li> 이력없음 </li>
+                </ul>
             </div>
         </div>`;
     })();
@@ -44,7 +46,7 @@ export default function FocusRecord({ initialState }) {
                 return str;
             })
             .join('');
-   
+
         this.$element.querySelector('.dropdown-list #list').innerHTML = (htmlString || `<li>이력없음<li>`);
     };
 
